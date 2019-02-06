@@ -1,12 +1,16 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 // routing + themeProvider
-class App extends Component {
-  state = {};
 
-  render() {
-    return <div className="App">Hello world</div>;
-  }
-}
+const App = () => {
+  const [count] = useState(0);
+
+  return (
+    <div>
+      <p>Hello</p>
+      <div>{count}</div>
+    </div>
+  );
+};
 
 export default App;
