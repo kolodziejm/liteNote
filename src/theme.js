@@ -1,8 +1,9 @@
 export default {
   colors: {
     background: '#F8F8F8',
-    shadow: '#333333',
-    darkGrey: '#666666',
+    darkGrey: '#333333',
+    body: '#555555',
+    lightGrey: '#D8D8D8',
     primary: '#531CB3',
     secondary: '#97DFFC',
     danger: '#FE5F55',

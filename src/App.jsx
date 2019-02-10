@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-// routing + themeProvider
+// routing
 
 const App = () => {
   const [count] = useState(0);

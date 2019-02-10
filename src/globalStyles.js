@@ -24,9 +24,9 @@ html {
 }
     
 body {
-    font-family: ${props => props.theme.fonts.raleway};
+    font-family: ${props => props.theme.fonts.raleway}; 
     background-color: ${props => props.theme.colors.background};
-    color: ${props => props.theme.colors.darkGrey};
+    color: ${props => props.theme.colors.body};
     box-sizing: border-box;
     overflow-x: hidden;
     line-height: 1.5;
