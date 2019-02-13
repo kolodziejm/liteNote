@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-// routing
+// routing (hashrouter)
 
 const App = () => {
   const [count] = useState(0);

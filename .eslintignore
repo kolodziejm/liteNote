@@ -4,3 +4,8 @@ index.js
 *.test.jsx
 
 config
+node_modules
+build
+scripts
+jest.config.js
+rtl.setup.js
