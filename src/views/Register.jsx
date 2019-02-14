@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 const Register = props => {
   const [username, setUsername] = useState('');
@@ -9,6 +9,6 @@ const Register = props => {
   return <div />;
 };
 
-Register.propTypes = {};
+// Register.propTypes = {};
 
 export default Register;
