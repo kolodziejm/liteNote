@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import theme from '../theme';
 
 import Input from './Input';
 import Label from './typography/Label';
 import Helper from './typography/Helper';
 
-const Field = ({ id, type, label, required, name, changed, value, placeholder, error, helper }) => (
-  <div>
+const Container = styled.div`
+  margin-bottom: ${props => props.marginBottom};
+`;
+
+const Field = ({ id, type, label, required, name, changed, value, placeholder, error, helper, marginBottom }) => (
+  <Container marginBottom={marginBottom}>
     <Label 
       htmlFor={id}
-      margin={`0 0 ${theme.spaces.xxs}px 0`}
+      margin={`0 0 ${theme.spaces.xxs}px ${theme.spaces.xxs}px`}
     >
       { label }
     </Label>
@@ -26,8 +31,15 @@ const Field = ({ id, type, label, required, name, changed, value, placeholder, e
       margin={`0 0 ${theme.spacingUnit}px 0`}
     />
     { !error && !helper ? null : 
-    <Helper data-testid="helper" error={error}>{ error || helper }</Helper>}
-  </div>
+    (
+      <Helper 
+        data-testid="helper"
+        margin={`0 0 0 ${theme.spaces.xxs}px`} 
+        error={error}
+      >
+        { error || helper }
+      </Helper>)}
+  </Container>
 );
 
 Field.propTypes = {
@@ -40,7 +52,8 @@ Field.propTypes = {
   helper: PropTypes.string,
   changed: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  marginBottom: PropTypes.number
 }
 
 Field.defaultProps = {
@@ -49,6 +62,7 @@ Field.defaultProps = {
   placeholder: '',
   value: '',
   required: false,
+  marginBottom: `${theme.spaces.md}px`
 }
 
 export default Field;

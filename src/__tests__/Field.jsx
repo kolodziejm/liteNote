@@ -23,7 +23,7 @@ describe('<Field />', () => {
   })
 
   test('it shows a danger border and danger helper when error is passed', () => {
-    const { getByDisplayValue, getByText, debug } = renderField({ 
+    const { getByDisplayValue, getByText } = renderField({ 
       type: 'text', id: 'id', name: 'Some name', helper: 'Some helper text', label: 'Comp label', required: true, error: 'Some error', value: 'Some value', changed: () => {} })
     expect(getByText('Some error')).toBeInTheDocument();
     expect(getByDisplayValue('Some value')).toHaveStyle(`

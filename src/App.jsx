@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // routing (hashrouter)
 import Field from './components/Field';
+import Background from './components/Background';
+import FormBody from './components/FormBody';
 
 const App = () => {
-  const [count] = useState(0);
 
   return (
-    <div>
-      <Field 
-        type="text"
-        id="id"
-        name="name"
-        helper="Some helper text"
-        label="Input"
-        value="soemthing"
-        changed={() => {}}
-        required
-      />
-      <div>{count}</div>
-    </div>
+    <Background>
+      <FormBody>
+        <Field 
+          type="text"
+          id="id"
+          name="name"
+          helper="Some helper text"
+          label="Input"
+          value="soemthing"
+          changed={() => {}}
+          required
+        />
+      </FormBody>
+    </Background>
   );
 };
 

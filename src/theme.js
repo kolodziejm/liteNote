@@ -37,7 +37,8 @@ export default {
     md: spacingUnit * 3,
     lg: spacingUnit * 4,
     xl: spacingUnit * 5,
-    xxl: spacingUnit * 6
+    xxl: spacingUnit * 6,
+    hg: spacingUnit * 8
   },
   breakpoints: {
     tabPort: '37.5em',

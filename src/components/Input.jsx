@@ -8,7 +8,6 @@ export default styled.input`
   color: ${props => props.theme.colors.body};
   margin: ${props => props.margin};
   display: block;
-  max-width: ${props => `${props.theme.spacingUnit * 36}px`};
   width: 100%;
   transition: all .3s ease-in-out;
 
