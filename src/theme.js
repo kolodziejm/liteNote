@@ -1,3 +1,4 @@
+const spacingUnit = 8
 export default {
   colors: {
     background: '#F8F8F8',
@@ -28,7 +29,16 @@ export default {
     md: '4px',
     lg: '8px'   
   },
-  spacingUnit: '8',
+  spacingUnit,
+  spaces: {
+    xxs: spacingUnit / 2, 
+    xs: spacingUnit,
+    sm: spacingUnit * 2,
+    md: spacingUnit * 3,
+    lg: spacingUnit * 4,
+    xl: spacingUnit * 5,
+    xxl: spacingUnit * 6
+  },
   breakpoints: {
     tabPort: '37.5em',
     tabLand: '56.25em',

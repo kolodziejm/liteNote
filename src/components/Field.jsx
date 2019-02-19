@@ -10,7 +10,7 @@ const Field = ({ id, type, label, required, name, changed, value, placeholder, e
   <div>
     <Label 
       htmlFor={id}
-      margin={`0 0 ${theme.spacingUnit}px 0`}
+      margin={`0 0 ${theme.spaces.xxs}px 0`}
     >
       { label }
     </Label>
