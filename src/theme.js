@@ -23,7 +23,12 @@ export default {
     xxl: '4.8rem',
     hg: '9.6rem',
   },
-  spacingUnit: '8px',
+  borderRadiuses: {
+    sm: '2px',
+    md: '4px',
+    lg: '8px'   
+  },
+  spacingUnit: '8',
   breakpoints: {
     tabPort: '37.5em',
     tabLand: '56.25em',

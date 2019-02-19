@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 
-const Register = props => {
+const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
-  return <div />;
+  const submitHandler = e => {
+    e.preventDefault();
+  };
+
+  return (
+    <form onSubmit={submitHandler}>
+      <input type="text" name="" id="" />
+    </form>
+  );
 };
 
 // Register.propTypes = {};
