@@ -11,15 +11,27 @@ const Container = styled.div`
   margin-bottom: ${props => props.marginBottom};
 `;
 
-const Field = ({ id, type, label, required, name, changed, value, placeholder, error, helper, marginBottom }) => (
+const Field = ({
+  id,
+  type,
+  label,
+  required,
+  name,
+  changed,
+  value,
+  placeholder,
+  error,
+  helper,
+  marginBottom,
+}) => (
   <Container marginBottom={marginBottom}>
-    <Label 
+    <Label
       htmlFor={id}
       margin={`0 0 ${theme.spaces.xxs}px ${theme.spaces.xxs}px`}
     >
-      { label }
+      {label}
     </Label>
-    <Input 
+    <Input
       type={type}
       id={id}
       required={required}
@@ -30,15 +42,15 @@ const Field = ({ id, type, label, required, name, changed, value, placeholder, e
       error={error}
       margin={`0 0 ${theme.spacingUnit}px 0`}
     />
-    { !error && !helper ? null : 
-    (
-      <Helper 
+    {!error && !helper ? null : (
+      <Helper
         data-testid="helper"
-        margin={`0 0 0 ${theme.spaces.xxs}px`} 
+        margin={`0 0 0 ${theme.spaces.xxs}px`}
         error={error}
       >
-        { error || helper }
-      </Helper>)}
+        {error || helper}
+      </Helper>
+    )}
   </Container>
 );
 
@@ -51,10 +63,10 @@ Field.propTypes = {
   required: PropTypes.bool,
   helper: PropTypes.string,
   changed: PropTypes.func.isRequired,
-  value: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
-  marginBottom: PropTypes.number
-}
+  marginBottom: PropTypes.string,
+};
 
 Field.defaultProps = {
   error: '',
@@ -62,7 +74,7 @@ Field.defaultProps = {
   placeholder: '',
   value: '',
   required: false,
-  marginBottom: `${theme.spaces.md}px`
-}
+  marginBottom: `${theme.spaces.md}px`,
+};
 
 export default Field;

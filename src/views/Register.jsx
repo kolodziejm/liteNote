@@ -1,19 +1,34 @@
-import React, { useState, useEffect } from 'react';
-// import PropTypes from 'prop-types';
+import React from 'react';
+import Field from '../components/Field';
+import Background from '../components/Background';
+import FormBody from '../components/FormBody';
 
 const Register = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+  // const [username, setUsername] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [passwordConfirm, setPasswordConfirm] = useState('');
 
-  const submitHandler = e => {
-    e.preventDefault();
-  };
+  // useEffect
+
+  // const submitHandler = e => {
+  //   e.preventDefault();
+  // };
 
   return (
-    <form onSubmit={submitHandler}>
-      <input type="text" name="" id="" />
-    </form>
+    <Background>
+      <FormBody>
+        <Field
+          type="text"
+          id="id"
+          name="name"
+          helper="Some helper text"
+          label="Input"
+          value="soemthing"
+          changed={() => {}}
+          required
+        />
+      </FormBody>
+    </Background>
   );
 };
 
