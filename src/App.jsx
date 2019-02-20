@@ -9,10 +9,11 @@ import Note from './views/Note';
 import EditNote from './views/EditNote';
 import NotFound from './views/NotFound';
 
-// get token from localstorage, set auth routes based on it
+// get token from localstorage + decode to get Date and user data, set auth routes based on it
 
 const App = () => {
-  // const [authenticated, setAuth] = useState(false);
+  // const [isAuthenticated, setAuth] = useState(false);
+  // const [user, setUser] = useState({})
 
   return (
     // TODO: ADD BASENAME FOR DEPLOY

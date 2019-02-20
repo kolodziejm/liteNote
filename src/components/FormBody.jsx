@@ -7,4 +7,11 @@ export default styled.form`
   max-width: ${props => `${props.theme.spacingUnit * 55}px`};
   margin: 0 auto;
   border-radius: ${props => props.theme.borderRadiuses.lg};
+
+  @media only screen and (min-width: ${props =>
+      props.theme.breakpoints.tabLand}) {
+    padding: ${props =>
+      `${props.theme.spaces.lg}px ${props.theme.spaces.hg}px`};
+    max-width: ${props => `${props.theme.spacingUnit * 64}px`};
+  }
 `;

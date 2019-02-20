@@ -10,7 +10,6 @@ import { ThemeProvider } from 'styled-components';
 import theme from './theme';
 import GlobalStyles from './globalStyles';
 
-// ApolloProvider wrap over App
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   request: operation => {

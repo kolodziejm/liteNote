@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+import theme from '../theme';
+
+import LgHeading from '../components/typography/LgHeading';
 import Field from '../components/Field';
 import Background from '../components/Background';
 import FormBody from '../components/FormBody';
+import Logo from '../components/Logo';
+import Center from '../components/Center';
 
 const Register = () => {
-  // const [username, setUsername] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [username] = useState('');
+  const [password] = useState('');
+  const [passwordConfirm] = useState('');
+  // const [errors, setErrors] = useState({});
 
   // useEffect
 
@@ -16,14 +23,38 @@ const Register = () => {
 
   return (
     <Background>
+      <Center>
+        <Logo authenticated={false} transform="translateX()" />
+      </Center>
       <FormBody>
+        <LgHeading textAlign="center" margin={`0 0 ${theme.spaces.xl}px 0`}>
+          Create account
+        </LgHeading>
         <Field
           type="text"
-          id="id"
-          name="name"
-          helper="Some helper text"
-          label="Input"
-          value="soemthing"
+          id="username"
+          name="username"
+          label="Username"
+          value={username}
+          changed={() => {}}
+          required
+        />
+        <Field
+          type="password"
+          id="password"
+          name="password"
+          helper="Must have at least 5 characters"
+          label="Password"
+          value={password}
+          changed={() => {}}
+          required
+        />
+        <Field
+          type="password"
+          id="passwordConfirm"
+          name="passwordConfirm"
+          label="Confirm password"
+          value={passwordConfirm}
           changed={() => {}}
           required
         />

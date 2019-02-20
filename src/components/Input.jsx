@@ -14,6 +14,14 @@ export default styled.input`
   display: block;
   width: 100%;
   transition: all 0.3s ease-in-out;
+  outline: none;
+
+  /* &:invalid: {
+  } */
+
+  &:focus {
+    border: 1px solid ${props => props.theme.colors.primary};
+  }
 
   &::placeholder {
     font-style: italic;
