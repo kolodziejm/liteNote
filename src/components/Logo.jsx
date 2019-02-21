@@ -14,13 +14,13 @@ const StyledLink = styled(Link)`
 const Image = styled.img`
   width: ${props => props.theme.spacingUnit * 15}px;
   @media only screen and (min-width: ${props =>
-      props.theme.breakpoints.tabPort}) {
+    props.theme.breakpoints.tabPort}) {
     width: ${props => props.theme.spacingUnit * 20}px;
   }
-  @media only screen and (min-width: ${props =>
-      props.theme.breakpoints.tabLand}) {
+  /* @media only screen and (min-width: ${props =>
+    props.theme.breakpoints.tabLand}) {
     width: ${props => props.theme.spacingUnit * 25}px;
-  }
+  } */
 `;
 
 const Logo = ({ authenticated, margin, transform }) => (

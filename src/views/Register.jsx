@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 import theme from '../theme';
 
 import LgHeading from '../components/typography/LgHeading';
+import Paragraph from '../components/typography/Paragraph';
 import Field from '../components/Field';
 import Background from '../components/Background';
 import FormBody from '../components/FormBody';
 import Logo from '../components/Logo';
 import Center from '../components/Center';
+import CtaButton from '../components/CtaButton';
+import { LinkPrimary } from '../components/Link';
 
 const Register = () => {
   const [username] = useState('');
@@ -58,6 +61,15 @@ const Register = () => {
           changed={() => {}}
           required
         />
+        <Center margin={`0 0 ${theme.spaces.lg}px 0`}>
+          <CtaButton type="submit">Register</CtaButton>
+        </Center>
+        <Center>
+          <Paragraph>
+            Already a user?
+            <LinkPrimary to="/login"> Login</LinkPrimary>
+          </Paragraph>
+        </Center>
       </FormBody>
     </Background>
   );

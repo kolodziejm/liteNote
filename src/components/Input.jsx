@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export default styled.input`
   border: 1px solid
     ${props =>
-      props.error ? props.theme.colors.danger : props.theme.colors.secondary};
+      props.error ? props.theme.colors.danger : props.theme.colors.lightGrey};
   border-radius: ${props => props.theme.borderRadiuses.md};
   font-size: ${props => props.theme.fontSizes.sm};
   padding: ${props =>
@@ -15,9 +15,6 @@ export default styled.input`
   width: 100%;
   transition: all 0.3s ease-in-out;
   outline: none;
-
-  /* &:invalid: {
-  } */
 
   &:focus {
     border: 1px solid ${props => props.theme.colors.primary};
