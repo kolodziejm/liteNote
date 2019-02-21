@@ -15,7 +15,7 @@ const Image = styled.img`
   width: ${props => props.theme.spacingUnit * 15}px;
   @media only screen and (min-width: ${props =>
     props.theme.breakpoints.tabPort}) {
-    width: ${props => props.theme.spacingUnit * 20}px;
+    width: ${props => props.theme.spacingUnit * 18}px;
   }
   /* @media only screen and (min-width: ${props =>
     props.theme.breakpoints.tabLand}) {

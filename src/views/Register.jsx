@@ -38,6 +38,7 @@ const Register = () => {
           id="username"
           name="username"
           label="Username"
+          helper="Must be at least 3 characters long"
           value={username}
           changed={() => {}}
           required
@@ -46,7 +47,7 @@ const Register = () => {
           type="password"
           id="password"
           name="password"
-          helper="Must have at least 5 characters"
+          helper="Must be at least 5 characters long"
           label="Password"
           value={password}
           changed={() => {}}
