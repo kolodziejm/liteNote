@@ -27,7 +27,7 @@ const Register = () => {
   return (
     <Background>
       <Center>
-        <Logo authenticated={false} transform="translateX()" />
+        <Logo authenticated={false} />
       </Center>
       <FormBody>
         <LgHeading textAlign="center" margin={`0 0 ${theme.spaces.xl}px 0`}>

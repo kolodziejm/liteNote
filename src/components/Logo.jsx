@@ -8,7 +8,6 @@ import img from '../assets/images/logo.png';
 const StyledLink = styled(Link)`
   display: inline-block;
   margin: ${props => props.margin};
-  transform: ${props => props.transform};
 `;
 
 const Image = styled.img`
@@ -23,12 +22,8 @@ const Image = styled.img`
   } */
 `;
 
-const Logo = ({ authenticated, margin, transform }) => (
-  <StyledLink
-    transform={transform}
-    margin={margin}
-    to={authenticated ? '/home' : '/'}
-  >
+const Logo = ({ authenticated, margin }) => (
+  <StyledLink margin={margin} to={authenticated ? '/home' : '/'}>
     <Image src={img} alt="liteNote" />
   </StyledLink>
 );
@@ -36,13 +31,11 @@ const Logo = ({ authenticated, margin, transform }) => (
 Logo.propTypes = {
   authenticated: PropTypes.bool,
   margin: PropTypes.string,
-  transform: PropTypes.string,
 };
 
 Logo.defaultProps = {
   authenticated: false,
   margin: '0',
-  transform: '',
 };
 
 export default Logo;
