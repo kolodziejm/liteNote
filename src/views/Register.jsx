@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { ClipLoader } from 'react-spinners';
-import theme from '../theme';
 
+import theme from '../theme';
 import { REGISTER_USER } from '../queries/auth';
 
 import LgHeading from '../components/typography/LgHeading';
@@ -30,11 +30,12 @@ const Register = ({ history }) => {
     e.preventDefault();
     registerUser()
       .then(data => {
-        history.push('/');
+        console.log(data);
       })
       .catch(errs => {
-        // manipulation
-        setErrors(errs);
+        /* eslint-disable */
+        console.log(errs);
+        /* eslint-disable  */
       });
   };
 
@@ -49,7 +50,10 @@ const Register = ({ history }) => {
             <Center>
               <Logo authenticated={false} />
             </Center>
-            <FormBody onSubmit={e => submitHandler(e, registerUser)}>
+            <FormBody
+              data-testid="register-form"
+              onSubmit={e => submitHandler(e, registerUser)}
+            >
               <LgHeading
                 textAlign="center"
                 margin={`0 0 ${theme.spaces.xl}px 0`}
@@ -123,7 +127,5 @@ Register.propTypes = {
 Register.defaultProps = {
   history: {},
 };
-
-export { Register };
 
 export default withRouter(Register);

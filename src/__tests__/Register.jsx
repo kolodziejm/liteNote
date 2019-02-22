@@ -1,12 +1,13 @@
 import React from 'react';
-import { render, wait, fireEvent } from 'react-testing-library';
+import { render, wait, fireEvent, act } from 'react-testing-library';
 import { ThemeProvider } from 'styled-components';
 import { MockedProvider } from 'react-apollo/test-utils';
+import { MemoryRouter } from 'react-router-dom';
 
 import { ClipLoader } from 'react-spinners';
 import theme from '../theme';
 
-import { Register } from '../views/Register';
+import Register from '../views/Register';
 import { REGISTER_USER } from '../queries/auth';
 
 const correctRequest = {
@@ -96,15 +97,15 @@ const tooShortUsernameMock = [
 
 describe('<Register />', () => {
   test('should render without error', () => {
-    const { getByText } = render(
+    const { getByTestId } = render(
       <MockedProvider mocks={[]}>
-        <ThemeProvider theme={theme}>
-          <Register />
-        </ThemeProvider>
+        <MemoryRouter>
+          <ThemeProvider theme={theme}>
+            <Register />
+          </ThemeProvider>
+        </MemoryRouter>
       </MockedProvider>
     );
-    const button = getByText(/register/i);
-    fireEvent.click(button);
-    expect(button);
+    expect(getByTestId('register-form')).toBeInTheDocument();
   });
 });
