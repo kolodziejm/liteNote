@@ -23,4 +23,7 @@ export default styled(OvalButton)`
     -webkit-transition: all 0.4s ease-in-out;
     transition: all 0.4s ease-in-out;
   }
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 `;
