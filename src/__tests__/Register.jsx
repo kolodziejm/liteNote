@@ -40,8 +40,6 @@ const usernameTooShort = {
 const positiveMock = [
   {
     request: correctRequest,
-  },
-  {
     result: {
       data: {
         register: {
@@ -55,9 +53,7 @@ const positiveMock = [
 
 const passwordsDontMatchMock = [
   {
-    request: passwordsDontMatch,
-  },
-  {
+    request: correctRequest,
     result: {
       data: {
         register: {
@@ -76,9 +72,7 @@ const passwordsDontMatchMock = [
 
 const tooShortUsernameMock = [
   {
-    request: usernameTooShort,
-  },
-  {
+    request: correctRequest,
     result: {
       data: {
         register: {
@@ -95,17 +89,20 @@ const tooShortUsernameMock = [
   },
 ];
 
+const renderWithMock = (mock, addTypename) =>
+  render(
+    <MockedProvider mocks={mock} addTypename={addTypename}>
+      <MemoryRouter>
+        <ThemeProvider theme={theme}>
+          <Register />
+        </ThemeProvider>
+      </MemoryRouter>
+    </MockedProvider>
+  );
+
 describe('<Register />', () => {
   test('should render without error', () => {
-    const { getByTestId } = render(
-      <MockedProvider mocks={[]}>
-        <MemoryRouter>
-          <ThemeProvider theme={theme}>
-            <Register />
-          </ThemeProvider>
-        </MemoryRouter>
-      </MockedProvider>
-    );
+    const { getByTestId } = renderWithMock(positiveMock, false);
     expect(getByTestId('register-form')).toBeInTheDocument();
   });
 });
