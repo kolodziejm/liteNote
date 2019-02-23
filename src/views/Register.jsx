@@ -94,12 +94,14 @@ const Register = ({ history }) => {
               <Center margin={`0 0 ${theme.spaces.lg}px 0`}>
                 <CtaButton width="12.5rem" height="3.7rem" type="submit">
                   {loading ? (
-                    <ClipLoader
-                      loading={loading}
-                      color={theme.colors.secondary}
-                      sizeUnit="rem"
-                      size={2}
-                    />
+                    <span data-testid="spinner">
+                      <ClipLoader
+                        loading={loading}
+                        color={theme.colors.secondary}
+                        sizeUnit="rem"
+                        size={2}
+                      />
+                    </span>
                   ) : (
                     'Register'
                   )}

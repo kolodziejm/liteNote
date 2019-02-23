@@ -106,8 +106,8 @@ describe('<Register />', () => {
     expect(getByTestId('register-form')).toBeInTheDocument();
   });
 
-  test('should show a Spinner in a button when a form is submitted', async () => {
-    const { getByTestId, getByText, getByLabelText } = renderWithMock(
+  test('should no longer show Register text in a button when a form is submitted with filled inputs', async () => {
+    const { getByTestId, getByText, getByLabelText, debug } = renderWithMock(
       positiveMock,
       false
     );
@@ -122,7 +122,9 @@ describe('<Register />', () => {
     fireEvent.change(getByLabelText(/confirm password/i), {
       target: { value: 'testing' },
     });
+    expect(btn).toHaveTextContent(/register/i);
     fireEvent.submit(form);
     expect(btn).not.toHaveTextContent(/register/i);
+    expect(btn).toContainElement(getByTestId('spinner'));
   });
 });
