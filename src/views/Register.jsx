@@ -31,6 +31,7 @@ const Register = ({ history }) => {
     registerUser()
       .then(data => {
         console.log(data);
+        // if errors - set errors and return. Otherwise set the token and push to home
       })
       .catch(errs => {
         /* eslint-disable */

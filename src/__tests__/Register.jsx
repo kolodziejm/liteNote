@@ -105,4 +105,24 @@ describe('<Register />', () => {
     const { getByTestId } = renderWithMock(positiveMock, false);
     expect(getByTestId('register-form')).toBeInTheDocument();
   });
+
+  test('should show a Spinner in a button when a form is submitted', async () => {
+    const { getByTestId, getByText, getByLabelText } = renderWithMock(
+      positiveMock,
+      false
+    );
+    const btn = getByText(/register/i);
+    const form = getByTestId('register-form');
+    fireEvent.change(getByLabelText(/username/i), {
+      target: { value: 'John' },
+    });
+    fireEvent.change(getByLabelText(/password/i), {
+      target: { value: 'testing' },
+    });
+    fireEvent.change(getByLabelText(/confirm password/i), {
+      target: { value: 'testing' },
+    });
+    fireEvent.submit(form);
+    expect(btn).not.toHaveTextContent(/register/i);
+  });
 });
