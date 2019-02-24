@@ -46,7 +46,7 @@ describe('<Field />', () => {
       border: 1px solid ${theme.colors.danger}
     `);
     expect(getByText('Some error')).toHaveStyle(`
-      color: ${theme.colors.danger}
+      color: ${theme.colors.dangerText}
     `);
   });
 

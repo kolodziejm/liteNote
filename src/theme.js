@@ -8,6 +8,7 @@ export default {
     primary: '#531CB3',
     secondary: '#97DFFC',
     danger: '#FE5F55',
+    dangerText: '#BF1A2F',
     success: '#3CD070',
     white: '#E7ECEF',
   },

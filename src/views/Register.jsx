@@ -18,8 +18,6 @@ import Center from '../components/Center';
 import CtaButton from '../components/CtaButton';
 import { LinkPrimary } from '../components/Link';
 
-/* eslint-disable no-unused-vars */
-
 const Register = ({ history }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -29,14 +27,23 @@ const Register = ({ history }) => {
   const submitHandler = (e, registerUser) => {
     e.preventDefault();
     registerUser()
-      .then(data => {
-        console.log(data);
-        // if errors - set errors and return. Otherwise set the token and push to home
+      .then(({ data }) => {
+        const { errors: errs, token } = data.register;
+        if (errs.length) {
+          const errObj = {};
+          errs.forEach(err => {
+            const { field, message } = err;
+            errObj[field] = message;
+          });
+          return setErrors(errObj);
+        }
+        // eslint-disable-next-line no-undef
+        localStorage.setItem('token', `Bearer ${token}`);
+        return history.push('/home');
       })
       .catch(errs => {
-        /* eslint-disable */
+        // eslint-disable-next-line no-console
         console.log(errs);
-        /* eslint-disable  */
       });
   };
 
@@ -45,7 +52,7 @@ const Register = ({ history }) => {
       mutation={REGISTER_USER}
       variables={{ username, password, passwordConfirm }}
     >
-      {(registerUser, { data, loading }) => {
+      {(registerUser, { loading }) => {
         return (
           <Background>
             <Center>
@@ -80,6 +87,7 @@ const Register = ({ history }) => {
                 label="Password"
                 value={password}
                 changed={e => setPassword(e.target.value)}
+                error={errors.password}
                 required
               />
               <Field
@@ -89,6 +97,7 @@ const Register = ({ history }) => {
                 label="Confirm password"
                 value={passwordConfirm}
                 changed={e => setPasswordConfirm(e.target.value)}
+                error={errors.passwordConfirm}
                 required
               />
               <Center margin={`0 0 ${theme.spaces.lg}px 0`}>
@@ -120,8 +129,6 @@ const Register = ({ history }) => {
     </Mutation>
   );
 };
-
-/* eslint-disable no-unused-vars */
 
 Register.propTypes = {
   history: PropTypes.shape({}),
