@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import img from '../assets/images/logo.png';
+import logo from '../assets/images/logo.png';
+import simpleLogo from '../assets/images/simple-logo.png';
 
 const StyledLink = styled(Link)`
   display: inline-block;
@@ -22,19 +23,33 @@ const Image = styled.img`
   } */
 `;
 
-const Logo = ({ authenticated, margin }) => (
+const SimpleImage = styled.img`
+  width: ${props => props.theme.spacingUnit * 6}px;
+  @media only screen and (min-width: ${props =>
+      props.theme.breakpoints.tabPort}) {
+    width: ${props => props.theme.spacingUnit * 7}px;
+  }
+`;
+
+const Logo = ({ authenticated, margin, simple }) => (
   <StyledLink margin={margin} to={authenticated ? '/home' : '/'}>
-    <Image src={img} alt="liteNote" />
+    {simple ? (
+      <SimpleImage src={simpleLogo} alt="liteNote" />
+    ) : (
+      <Image src={logo} alt="liteNote" />
+    )}
   </StyledLink>
 );
 
 Logo.propTypes = {
   authenticated: PropTypes.bool,
   margin: PropTypes.string,
+  simple: PropTypes.bool,
 };
 
 Logo.defaultProps = {
   authenticated: false,
+  simple: false,
   margin: '0',
 };
 

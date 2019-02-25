@@ -10,7 +10,8 @@ export default {
     danger: '#FE5F55',
     dangerText: '#BF1A2F',
     success: '#3CD070',
-    white: '#E7ECEF',
+    light: '#E7ECEF',
+    white: '#FFF',
   },
   fonts: {
     raleway: 'Raleway, sans-serif',

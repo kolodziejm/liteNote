@@ -6,9 +6,9 @@ const StyledLink = styled(Link)`
 `;
 
 export const LinkPrimary = styled(StyledLink)`
-  color: ${props => props.theme.colors.primary};
+  color: ${({ theme: { colors } }) => colors.primary};
 `;
 
 export const LinkSecondary = styled(StyledLink)`
-  color: ${props => props.theme.colors.secondary};
+  color: ${({ theme: { colors } }) => colors.secondary};
 `;

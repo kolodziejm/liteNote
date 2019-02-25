@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { ApolloConsumer } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
@@ -49,7 +48,6 @@ const Login = ({ history }) => {
       });
       return setErrors(errObj);
     }
-    console.log(login.token);
     // eslint-disable-next-line no-undef
     localStorage.setItem('token', `Bearer ${login.token}`);
     return history.push('/home');
