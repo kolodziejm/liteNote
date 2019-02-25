@@ -1,12 +1,19 @@
 import React from 'react';
-import { render, wait, fireEvent, act } from 'react-testing-library';
+import {
+  render,
+  wait,
+  fireEvent,
+  act,
+  queryByTestId,
+} from 'react-testing-library';
 import { ThemeProvider } from 'styled-components';
 import { MockedProvider } from 'react-apollo/test-utils';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Switch, Route } from 'react-router-dom';
 
 import theme from '../theme';
 
 import Register from '../views/Register';
+import Home from '../views/Home';
 import { REGISTER_USER } from '../queries/auth';
 
 const correctRequest = {
@@ -68,12 +75,19 @@ const negativeMock = [
   },
 ];
 
+const initialEntries = ['/register'];
+
 const renderWithMock = (mock, addTypename) =>
   render(
     <MockedProvider mocks={mock} addTypename={addTypename}>
-      <MemoryRouter>
+      <MemoryRouter initialEntries={initialEntries}>
         <ThemeProvider theme={theme}>
-          <Register />
+          <Switch>
+            <Route path="/register" component={Register} />
+            <Route path="/home" component={Home} />
+            {/* <Register />
+            <Home /> */}
+          </Switch>
         </ThemeProvider>
       </MemoryRouter>
     </MockedProvider>
@@ -143,6 +157,21 @@ describe('<Register />', () => {
       expect(getByText(/passwords don't match/i)).toHaveStyle(`
     color: ${theme.colors.dangerText};
     `);
+    });
+  });
+
+  test('should redirect to /home on successful account creation', async () => {
+    const { getByTestId, getByLabelText, queryByTestId } = renderWithMock(
+      positiveMock,
+      false
+    );
+    expect(queryByTestId('home-page')).not.toBeInTheDocument();
+    const form = getByTestId('register-form');
+    setInputValues(getByLabelText, 'John', 'testing', 'testing');
+    fireEvent.submit(form);
+    await wait(() => {
+      expect(getByTestId('home-page')).toBeInTheDocument();
+      expect(form).not.toBeInTheDocument();
     });
   });
 });
