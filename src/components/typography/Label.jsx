@@ -7,4 +7,6 @@ export default styled.label`
   font-weight: bold;
   color: ${({ theme: { colors } }) => colors.body};
   margin: ${props => props.margin};
+  white-space: nowrap;
+  overflow: hidden;
 `;

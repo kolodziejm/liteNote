@@ -5,7 +5,7 @@ import ContentLimiter from './ContentLimiter';
 
 const NavBody = styled.nav`
   background-color: ${({ theme: { colors } }) => colors.primary};
-  padding: ${({ theme: { spaces } }) => `${spaces.xs}px ${spaces.xxs}px`};
+  padding: ${({ theme: { spaces } }) => `${spaces.xs}px ${spaces.sm}px`};
 `;
 
 export default () => (

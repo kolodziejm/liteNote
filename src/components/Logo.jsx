@@ -9,6 +9,7 @@ import simpleLogo from '../assets/images/simple-logo.png';
 const StyledLink = styled(Link)`
   display: inline-block;
   margin: ${props => props.margin};
+  outline-color: ${({ theme: { colors } }) => colors.secondary};
 `;
 
 const Image = styled.img`

@@ -11,4 +11,5 @@ export default styled.button`
     selected ? colors.white : colors.body};
   border: 1px solid ${({ theme: { colors } }) => colors.lightGrey};
   margin: ${props => props.margin};
+  outline-color: ${({ theme: { colors } }) => colors.secondary};
 `;

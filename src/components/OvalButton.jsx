@@ -11,4 +11,5 @@ export default styled.button`
   cursor: pointer;
   width: ${props => props.width};
   height: ${props => props.height};
+  outline-color: ${({ theme: { colors } }) => colors.secondary};
 `;
