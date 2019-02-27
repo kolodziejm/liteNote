@@ -12,4 +12,5 @@ export default styled.button`
   border: 1px solid ${({ theme: { colors } }) => colors.lightGrey};
   margin: ${props => props.margin};
   outline-color: ${({ theme: { colors } }) => colors.secondary};
+  transition: all 0.3s ease-in-out;
 `;
