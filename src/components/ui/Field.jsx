@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import theme from '../theme';
+import theme from '../../theme';
 
 import Input from './Input';
-import Label from './typography/Label';
-import Helper from './typography/Helper';
+import Label from '../typography/Label';
+import Helper from '../typography/Helper';
 
 const Container = styled.div`
   margin-bottom: ${props => props.marginBottom};

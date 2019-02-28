@@ -10,13 +10,13 @@ import { REGISTER_USER } from '../queries/auth';
 
 import LgHeading from '../components/typography/LgHeading';
 import Paragraph from '../components/typography/Paragraph';
-import Field from '../components/Field';
-import Background from '../components/Background';
-import FormBody from '../components/FormBody';
-import Logo from '../components/Logo';
-import Center from '../components/Center';
-import CtaButton from '../components/CtaButton';
-import { LinkPrimary } from '../components/Link';
+import Field from '../components/ui/Field';
+import Background from '../components/ui/Background';
+import FormBody from '../components/ui/FormBody';
+import Logo from '../components/ui/Logo';
+import Center from '../components/helpers/Center';
+import CtaButton from '../components/ui/CtaButton';
+import { LinkPrimary } from '../components/ui/Link';
 
 const Register = ({ history }) => {
   const [username, setUsername] = useState('');

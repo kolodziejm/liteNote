@@ -4,7 +4,7 @@ import { render } from 'react-testing-library';
 import { ThemeProvider } from 'styled-components';
 import theme from '../theme';
 
-import Field from '../components/Field';
+import Field from '../components/ui/Field';
 
 const renderField = props =>
   render(

@@ -5,8 +5,11 @@ export const GET_NOTE = gql`
     getNote(id: $id) {
       _id
       title
-      tags
       content
+      tags {
+        _id
+        tagName
+      }
     }
   }
 `;
@@ -16,8 +19,11 @@ export const GET_ALL_NOTES = gql`
     getAllNotes {
       _id
       title
-      tags
       excerpt
+      tags {
+        _id
+        tagName
+      }
     }
   }
 `;
@@ -29,7 +35,10 @@ export const CREATE_OR_UPDATE_NOTE = gql`
         _id
         title
         content
-        tags
+        tags {
+          _id
+          tagName
+        }
       }
       errors {
         field

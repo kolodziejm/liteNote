@@ -4,19 +4,23 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
+import { ClipLoader } from 'react-spinners';
 
 import theme from '../theme';
+import { GET_ALL_NOTES } from '../queries/notes';
 
 import Navbar from '../components/Navbar';
-import ContentLimiter from '../components/ContentLimiter';
-import MainContainer from '../components/MainContainer';
-import Input from '../components/Input';
+import ContentLimiter from '../components/helpers/ContentLimiter';
+import MainContainer from '../components/helpers/MainContainer';
+import Input from '../components/ui/Input';
 import Label from '../components/typography/Label';
-import Button from '../components/Button';
+import Button from '../components/ui/Button';
+import Center from '../components/helpers/Center';
 
 const { spaces } = theme;
 
 const SearchContainer = styled.div`
+  margin-bottom: ${props => `${spaces.xxl}px`};
   @media only screen and (min-width: ${({ theme: { breakpoints } }) =>
     breakpoints.tabLand}) {
     display: flex;
@@ -88,6 +92,14 @@ const Search = ({
   </SearchContainer>
 );
 
+// WHAT'S LEFT:
+/*
+      - apollo query component, fetch these items
+      - create Card component and Tag component (Tag with cross button (home, Note.jsx, EditNote) and without it (in Card))
+      - when Creating A tag for filtering in Home, make it an Object with an id generated with uniqid and its name.
+      - fill Card with life from the apollo. Add some animations, spinner
+*/
+
 const Home = ({ history }) => {
   const [searchMethod, setSearchMethod] = useState('title');
   const [title, setTitle] = useState('');
@@ -97,25 +109,62 @@ const Home = ({ history }) => {
   const addTag = (e, newTagName) => {
     e.preventDefault();
     console.log(tagName);
+    // ... setTags() ...
   };
 
   return (
     <div data-testid="home-page">
-      <Navbar />
-      <ContentLimiter>
-        <MainContainer>
-          <Search
-            searchMethod={searchMethod}
-            setSearchMethod={setSearchMethod}
-            title={title}
-            setTitle={setTitle}
-            tagName={tagName}
-            setTagName={setTagName}
-            tags={tags}
-            addTag={addTag}
-          />
-        </MainContainer>
-      </ContentLimiter>
+      <Query query={GET_ALL_NOTES}>
+        {({ data, loading, error }) => {
+          console.log(data, loading);
+          return (
+            <>
+              <Navbar />
+              <ContentLimiter>
+                <MainContainer>
+                  <Search
+                    searchMethod={searchMethod}
+                    setSearchMethod={setSearchMethod}
+                    title={title}
+                    setTitle={setTitle}
+                    tagName={tagName}
+                    setTagName={setTagName}
+                    tags={tags}
+                    addTag={addTag}
+                  />
+                  {loading ? (
+                    <Center>
+                      <ClipLoader
+                        loading={loading}
+                        color={theme.colors.secondary}
+                        sizeUnit="rem"
+                        size={6}
+                      />
+                    </Center>
+                  ) : (
+                    data.getAllNotes.map(
+                      ({ _id, title: noteTitle, excerpt, tags: noteTags }) => {
+                        const tagList = noteTags.map(
+                          ({ _id: tagId, tagName: name }) => (
+                            <div key={tagId}>{name}</div>
+                          )
+                        );
+                        return (
+                          <div key={_id}>
+                            <h4>{noteTitle}</h4>
+                            {tagList}
+                            <p>{excerpt}</p>
+                          </div>
+                        );
+                      }
+                    )
+                  )}
+                </MainContainer>
+              </ContentLimiter>
+            </>
+          );
+        }}
+      </Query>
     </div>
   );
 };

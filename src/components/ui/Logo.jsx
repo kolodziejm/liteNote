@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import logo from '../assets/images/logo.png';
-import simpleLogo from '../assets/images/simple-logo.png';
+import logo from '../../assets/images/logo.png';
+import simpleLogo from '../../assets/images/simple-logo.png';
 
 const StyledLink = styled(Link)`
   display: inline-block;

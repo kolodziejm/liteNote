@@ -161,17 +161,22 @@ describe('<Register />', () => {
   });
 
   test('should redirect to /home on successful account creation', async () => {
-    const { getByTestId, getByLabelText, queryByTestId } = renderWithMock(
-      positiveMock,
-      false
-    );
+    const {
+      getByTestId,
+      getByLabelText,
+      queryByTestId,
+      debug,
+    } = renderWithMock(positiveMock, false);
     expect(queryByTestId('home-page')).not.toBeInTheDocument();
     const form = getByTestId('register-form');
     setInputValues(getByLabelText, 'John', 'testing', 'testing');
     fireEvent.submit(form);
     await wait(() => {
-      expect(getByTestId('home-page')).toBeInTheDocument();
-      expect(form).not.toBeInTheDocument();
+      wait(() => {
+        expect(getByTestId('home-page')).toBeInTheDocument();
+        expect(form).not.toBeInTheDocument();
+        debug();
+      });
     });
   });
 });
