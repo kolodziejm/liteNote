@@ -12,6 +12,7 @@ export default {
     success: '#3CD070',
     light: '#E7ECEF',
     white: '#FFF',
+    shadow: '#afafaf',
   },
   fonts: {
     raleway: 'Raleway, sans-serif',

@@ -172,11 +172,9 @@ describe('<Register />', () => {
     setInputValues(getByLabelText, 'John', 'testing', 'testing');
     fireEvent.submit(form);
     await wait(() => {
-      wait(() => {
-        expect(getByTestId('home-page')).toBeInTheDocument();
-        expect(form).not.toBeInTheDocument();
-        debug();
-      });
+      expect(getByTestId('home-page')).toBeInTheDocument();
+      expect(form).not.toBeInTheDocument();
+      debug();
     });
   });
 });

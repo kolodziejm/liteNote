@@ -16,26 +16,29 @@ import Input from '../components/ui/Input';
 import Label from '../components/typography/Label';
 import Button from '../components/ui/Button';
 import Center from '../components/helpers/Center';
+import Note from '../components/Note';
 
-const { spaces } = theme;
+import FlexList from '../components/helpers/FlexList';
+import Tag from '../components/ui/Tag';
+
+const { spaces, breakpoints } = theme;
 
 const SearchContainer = styled.div`
-  margin-bottom: ${props => `${spaces.xxl}px`};
-  @media only screen and (min-width: ${({ theme: { breakpoints } }) =>
-    breakpoints.tabLand}) {
+  margin-bottom: ${() => `${spaces.xxl}px`};
+  @media only screen and (min-width: ${breakpoints.tabLand}) {
     display: flex;
     justify-content: center;
     align-items: center;
-  }}
+  }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
+  align-self: flex-start;
   margin: ${`0 0 ${spaces.sm}px 0`};
 
-  @media only screen and (min-width: ${({ theme: { breakpoints } }) =>
-      breakpoints.tabLand}) {
+  @media only screen and (min-width: ${breakpoints.tabLand}) {
     margin: ${`0 ${spaces.sm}px 0 0`};
   }
 `;
@@ -43,7 +46,29 @@ const ButtonContainer = styled.div`
 const SearchForm = styled.form`
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const NotesList = styled.ul`
+  list-style: none;
+  margin: 0 auto;
+  max-width: 320px;
+
+  @media only screen and (min-width: ${breakpoints.tabPort}) {
+    max-width: 100%;
+    @supports (display: grid) {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      column-gap: ${`${spaces.md}px`};
+      row-gap: ${`${spaces.md}px`};
+      justify-items: center;
+    }
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
 `;
 
 const Search = ({
@@ -85,20 +110,19 @@ const Search = ({
           value={tagName}
           onChange={e => setTagName(e.target.value)}
           placeholder="Enter the tag name and press 'Enter'"
+          margin={`0 0 ${spaces.xs}px 0`}
         />
         <input type="submit" style={{ display: 'none' }} />
+        {/* Try Dynamic tags here */}
+        <FlexList>
+          <Tag name="Some tag" clicked={() => {}} />
+          <Tag name="Some tag name" clicked={() => {}} />
+          <Tag name="Some tag name long" clicked={() => {}} />
+        </FlexList>
       </SearchForm>
     )}
   </SearchContainer>
 );
-
-// WHAT'S LEFT:
-/*
-      - apollo query component, fetch these items
-      - create Card component and Tag component (Tag with cross button (home, Note.jsx, EditNote) and without it (in Card))
-      - when Creating A tag for filtering in Home, make it an Object with an id generated with uniqid and its name.
-      - fill Card with life from the apollo. Add some animations, spinner
-*/
 
 const Home = ({ history }) => {
   const [searchMethod, setSearchMethod] = useState('title');
@@ -111,6 +135,8 @@ const Home = ({ history }) => {
     console.log(tagName);
     // ... setTags() ...
   };
+
+  const searchByTitle = () => {};
 
   return (
     <div data-testid="home-page">
@@ -142,22 +168,31 @@ const Home = ({ history }) => {
                       />
                     </Center>
                   ) : (
-                    data.getAllNotes.map(
-                      ({ _id, title: noteTitle, excerpt, tags: noteTags }) => {
-                        const tagList = noteTags.map(
-                          ({ _id: tagId, tagName: name }) => (
-                            <div key={tagId}>{name}</div>
-                          )
-                        );
-                        return (
-                          <div key={_id}>
-                            <h4>{noteTitle}</h4>
-                            {tagList}
-                            <p>{excerpt}</p>
-                          </div>
-                        );
-                      }
-                    )
+                    <NotesList>
+                      {data.getAllNotes.map(
+                        ({
+                          _id,
+                          title: noteTitle,
+                          excerpt,
+                          tags: noteTags,
+                        }) => {
+                          const tagList = noteTags.map(
+                            ({ _id: tagId, tagName: name }) => (
+                              <div key={tagId}>{name}</div>
+                            )
+                          );
+                          return (
+                            <Note
+                              key={_id}
+                              title={noteTitle}
+                              excerpt={excerpt}
+                              tags={noteTags}
+                              margin={`0 0 ${spaces.md}px 0`}
+                            />
+                          );
+                        }
+                      )}
+                    </NotesList>
                   )}
                 </MainContainer>
               </ContentLimiter>
