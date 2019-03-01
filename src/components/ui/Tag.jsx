@@ -25,9 +25,10 @@ const DeleteButton = styled.button`
   cursor: pointer;
   border-radius: 50%;
   border: 0;
-  background-color: ${({ theme: { colors } }) => colors.white};
-  color: ${({ theme: { colors } }) => colors.danger};
+  background-color: ${({ theme: { colors } }) => colors.danger};
+  color: ${({ theme: { colors } }) => colors.white};
   padding: ${({ theme: { spaces } }) => `${spaces.xxs}px`};
+  text-align: center;
 `;
 
 const Tag = ({ name, clicked }) => (
