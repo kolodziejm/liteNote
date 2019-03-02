@@ -10,12 +10,16 @@ import Navbar from '../components/Navbar';
 import Field from '../components/ui/Field';
 import TagForm from '../components/TagForm';
 
-const { spaces } = theme;
+const { spaces, breakpoints } = theme;
 
 const NoteContainer = styled.div`
   margin: 0 auto;
   max-width: 960px;
-  padding: ${`${spaces.xl}px ${spaces.xs}px`};
+  padding: ${`${spaces.md}px ${spaces.xs}px`};
+
+  @media only screen and (min-width: ${breakpoints.desktop}) {
+    padding: ${`${spaces.xl}px 0`};
+  }
 `;
 
 const AddNote = () => {
