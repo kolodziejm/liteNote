@@ -1,17 +1,31 @@
 import React from 'react';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
+
+import NavBody from './ui/NavBody';
 import Logo from './ui/Logo';
 import ContentLimiter from './helpers/ContentLimiter';
+import Center from './helpers/Center';
 
-const NavBody = styled.nav`
-  background-color: ${({ theme: { colors } }) => colors.primary};
-  padding: ${({ theme: { spaces } }) => `${spaces.xs}px ${spaces.sm}px`};
-`;
-
-export default () => (
+const Navbar = ({ simple }) => (
   <NavBody>
     <ContentLimiter>
-      <Logo simple authenticated />
+      {simple ? (
+        <Center>
+          <Logo simple authenticated />
+        </Center>
+      ) : (
+        <Logo simple authenticated />
+      )}
     </ContentLimiter>
   </NavBody>
 );
+
+Navbar.propTypes = {
+  simple: PropTypes.bool,
+};
+
+Navbar.defaultProps = {
+  simple: false,
+};
+
+export default Navbar;

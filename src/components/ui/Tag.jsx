@@ -29,6 +29,7 @@ const DeleteButton = styled.button`
   color: ${({ theme: { colors } }) => colors.white};
   padding: ${({ theme: { spaces } }) => `${spaces.xxs}px`};
   text-align: center;
+  font-weight: 700;
 `;
 
 const Tag = ({ name, clicked }) => (
