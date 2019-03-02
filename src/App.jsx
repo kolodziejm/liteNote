@@ -5,7 +5,7 @@ import Landing from './views/Landing';
 import Register from './views/Register';
 import Login from './views/Login';
 import Home from './views/Home';
-import Note from './views/Note';
+import AddNote from './views/AddNote';
 import EditNote from './views/EditNote';
 import NotFound from './views/NotFound';
 
@@ -24,7 +24,7 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
         <Route path="/edit-note/:id" component={EditNote} />
-        <Route path="/add-note" component={Note} />
+        <Route path="/add-note" component={AddNote} />
         <Route component={NotFound} />
       </Switch>
     </HashRouter>

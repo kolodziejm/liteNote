@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
@@ -45,4 +46,28 @@ body {
     -ms-font-feature-settings: "kern", "liga", "clig", "calt";
     -webkit-font-feature-settings: "kern", "liga", "clig", "calt";
     font-feature-settings: "kern", "liga", "clig", "calt";
-}`;
+}
+
+.ck-rounded-corners {
+  border-radius: ${({ theme: { borderRadiuses } }) =>
+    borderRadiuses.lg} !important;
+}
+
+.ck-content {
+  box-shadow: 0 3px 6px ${({ theme: { colors } }) => colors.shadow} !important;
+  min-height: 40rem;
+  font-size: 16px;
+  color: ${({ theme: { colors } }) => colors.darkGrey};
+  transition: all .3s ease-in-out;
+
+  &:focus {
+    border-top: 1px solid ${({ theme: { colors } }) =>
+      colors.secondary} !important;
+  border-left: 1px solid ${({ theme: { colors } }) =>
+    colors.lightGrey} !important;
+  border-right: 1px solid ${({ theme: { colors } }) =>
+    colors.lightGrey} !important;
+  border-bottom: 1px solid transparent !important;
+}
+
+`;

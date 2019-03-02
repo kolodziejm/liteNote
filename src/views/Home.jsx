@@ -17,9 +17,7 @@ import Label from '../components/typography/Label';
 import Button from '../components/ui/Button';
 import Center from '../components/helpers/Center';
 import Note from '../components/Note';
-
-import FlexList from '../components/helpers/FlexList';
-import Tag from '../components/ui/Tag';
+import TagForm from '../components/TagForm';
 
 const { spaces, breakpoints } = theme;
 
@@ -41,14 +39,6 @@ const ButtonContainer = styled.div`
   @media only screen and (min-width: ${breakpoints.tabLand}) {
     margin: ${`0 ${spaces.sm}px 0 0`};
   }
-`;
-
-const SearchForm = styled.form`
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: center;
 `;
 
 const NotesList = styled.ul`
@@ -105,21 +95,15 @@ const Search = ({
         placeholder="Start typing the title..."
       />
     ) : (
-      <SearchForm onSubmit={e => addTag(e, tagName)}>
-        <Input
-          value={tagName}
-          onChange={e => setTagName(e.target.value)}
-          placeholder="Enter the tag name and press 'Enter'"
-          margin={`0 0 ${spaces.xs}px 0`}
-        />
-        <input type="submit" style={{ display: 'none' }} />
-        {/* Try Dynamic tags here */}
-        <FlexList>
-          <Tag name="Some tag" clicked={() => {}} />
-          <Tag name="Some tag name" clicked={() => {}} />
-          <Tag name="Some tag name long" clicked={() => {}} />
-        </FlexList>
-      </SearchForm>
+      <TagForm
+        addTag={addTag}
+        setTagName={setTagName}
+        tagName={tagName}
+        tags={tags}
+        placeholder="Provide a tag name and press 'Enter'"
+        id="tag-search"
+        name="tag-search"
+      />
     )}
   </SearchContainer>
 );
