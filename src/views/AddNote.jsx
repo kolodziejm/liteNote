@@ -26,6 +26,7 @@ const AddNote = () => {
   const [title, setTitle] = useState('');
   const [tagName, setTagName] = useState('');
   const [tags, setTags] = useState([]);
+  const [noteContent, setNoteContent] = useState('');
   const [created, setCreated] = useState(false);
   const [lastSnapshot, setLastSnapshot] = useState({});
 
@@ -57,6 +58,7 @@ const AddNote = () => {
           id="create-tag"
           name="create-tag"
           label="Add tags - optional"
+          marginBottom={`${spaces.md}px`}
         />
         <CKEditor
           onInit={editor => {

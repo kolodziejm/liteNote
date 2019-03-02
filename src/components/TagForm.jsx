@@ -17,6 +17,7 @@ const Form = styled.form`
   align-items: flex-start;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: ${({ marginBottom }) => marginBottom};
 `;
 
 const TagForm = ({
@@ -28,8 +29,9 @@ const TagForm = ({
   id,
   name,
   label,
+  marginBottom,
 }) => (
-  <Form onSubmit={e => addTag(e, tagName)}>
+  <Form marginBottom={marginBottom} onSubmit={e => addTag(e, tagName)}>
     {label && (
       <Label margin={`0 0 ${spaces.xxs}px ${spaces.xxs}px`} htmlFor={id}>
         {label}
@@ -62,12 +64,14 @@ TagForm.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
+  marginBottom: PropTypes.string,
 };
 
 TagForm.defaultProps = {
   tags: [],
   placeholder: '',
   label: '',
+  marginBottom: '0',
 };
 
 export default TagForm;
