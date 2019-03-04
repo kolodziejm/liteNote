@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
@@ -23,7 +25,7 @@ const NoteContainer = styled.div`
   }
 `;
 
-const AddNote = () => {
+const AddNote = ({ history }) => {
   const [title, setTitle] = useState('');
   const [tagName, setTagName] = useState('');
   const [tags, setTags] = useState([]);
@@ -43,8 +45,10 @@ const AddNote = () => {
     e.preventDefault();
     // title validation (can't be empty)
     createOrUpdateNote()
-      .then(data => {
-        console.log(data); // redirect user to a single note page  - editNote view - /edit-note/:id path. Better UX, if he'd refresh the page it won't be blank, it will be filled with the created note data. Also test optimistic ui
+      .then(({ data: { createOrUpdateNote: { note, errors: resErrors } } }) => {
+        console.log(note, resErrors);
+        // optimistic ui stuff
+        history.push(`/edit-note/${note._id}`); // redirect user to a single note page  - editNote view - /edit-note/:id path. Better UX, if he'd refresh the page it won't be blank, it will be filled with the created note data. Also test optimistic ui
       })
       .catch(err => console.log(err));
   };
@@ -107,4 +111,12 @@ const AddNote = () => {
   );
 };
 
-export default AddNote;
+AddNote.propTypes = {
+  history: PropTypes.shape({}),
+};
+
+AddNote.defaultProps = {
+  history: {},
+};
+
+export default withRouter(AddNote);
