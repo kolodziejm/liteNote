@@ -47,8 +47,7 @@ const AddNote = ({ history }) => {
     createOrUpdateNote()
       .then(({ data: { createOrUpdateNote: { note, errors: resErrors } } }) => {
         console.log(note, resErrors);
-        // optimistic ui stuff
-        history.push(`/edit-note/${note._id}`); // redirect user to a single note page  - editNote view - /edit-note/:id path. Better UX, if he'd refresh the page it won't be blank, it will be filled with the created note data. Also test optimistic ui
+        history.push(`/edit-note/${note._id}`); // redirect user to a single note page  - editNote view - /edit-note/:id path. Better UX, if he'd refresh the page it won't be blank, it will be filled with the created note data.
       })
       .catch(err => console.log(err));
   };
