@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import CKEditor from '@ckeditor/ckeditor5-react';
@@ -47,7 +46,7 @@ const AddNote = () => {
           type="text"
           required
           value={title}
-          changed={() => {}}
+          changed={e => setTitle(e.target.value)}
         />
         <TagForm
           addTag={addTag}
@@ -62,7 +61,6 @@ const AddNote = () => {
         />
         <CKEditor
           onInit={editor => {
-            console.log('Editor is ready to use!', editor);
             editor.ui.view.editable.element.parentElement.insertBefore(
               editor.ui.view.toolbar.element,
               editor.ui.view.editable.element
@@ -70,7 +68,7 @@ const AddNote = () => {
           }}
           onChange={(event, editor) => {
             const data = editor.getData();
-            console.log(data);
+            setNoteContent(data);
           }}
           editor={DecoupledEditor}
         />

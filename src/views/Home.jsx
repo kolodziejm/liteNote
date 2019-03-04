@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
@@ -48,6 +47,9 @@ const NotesList = styled.ul`
 
   @media only screen and (min-width: ${breakpoints.tabPort}) {
     max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
     @supports (display: grid) {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -55,9 +57,6 @@ const NotesList = styled.ul`
       row-gap: ${`${spaces.md}px`};
       justify-items: center;
     }
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
   }
 `;
 
