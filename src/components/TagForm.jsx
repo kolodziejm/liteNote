@@ -41,6 +41,7 @@ const TagForm = ({
       onChange={e => setTagName(e.target.value)}
       placeholder={placeholder}
       margin={`0 0 ${spaces.xs}px 0`}
+      required
       id={id}
       name={name}
     />

@@ -7,7 +7,7 @@ export const GET_NOTE = gql`
       title
       content
       tags {
-        _id
+        id
         tagName
       }
     }
@@ -21,7 +21,7 @@ export const GET_ALL_NOTES = gql`
       title
       excerpt
       tags {
-        _id
+        id
         tagName
       }
     }
@@ -29,14 +29,14 @@ export const GET_ALL_NOTES = gql`
 `;
 
 export const CREATE_OR_UPDATE_NOTE = gql`
-  mutation($title: String!, $tags: [String], $content: String, $id: ID) {
+  mutation($title: String!, $tags: [TagInput], $content: String, $id: ID) {
     createOrUpdateNote(title: $title, tags: $tags, content: $content, id: $id) {
       note {
         _id
         title
         content
         tags {
-          _id
+          id
           tagName
         }
       }

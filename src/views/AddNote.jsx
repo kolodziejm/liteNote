@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
+import { CREATE_OR_UPDATE_NOTE } from '../queries/notes';
 import theme from '../theme';
 
 import Navbar from '../components/Navbar';
@@ -27,12 +29,24 @@ const AddNote = () => {
   const [tags, setTags] = useState([]);
   const [noteContent, setNoteContent] = useState('');
   const [created, setCreated] = useState(false);
+  const [noteId, setNoteId] = useState('');
   const [lastSnapshot, setLastSnapshot] = useState({});
+  const [errors, setErrors] = useState({});
 
   const addTag = (e, newTagName) => {
     e.preventDefault();
     console.log(tagName);
     // ... setTags() ...
+  };
+
+  const saveNote = (e, createOrUpdateNote) => {
+    e.preventDefault();
+    // title validation (can't be empty)
+    createOrUpdateNote()
+      .then(data => {
+        console.log(data); // redirect user to a single note page  - editNote view - /edit-note/:id path. Better UX, if he'd refresh the page it won't be blank, it will be filled with the created note data. Also test optimistic ui
+      })
+      .catch(err => console.log(err));
   };
 
   return (
@@ -72,6 +86,22 @@ const AddNote = () => {
           }}
           editor={DecoupledEditor}
         />
+        <Mutation
+          mutation={CREATE_OR_UPDATE_NOTE}
+          variables={{ title, tags, content: noteContent, id: noteId }}
+        >
+          {(createOrUpdateNote, { loading, error }) => {
+            if (loading) return <p>Loading...</p>;
+            return (
+              <button
+                type="submit"
+                onClick={e => saveNote(e, createOrUpdateNote)}
+              >
+                Save
+              </button>
+            );
+          }}
+        </Mutation>
       </NoteContainer>
     </div>
   );
