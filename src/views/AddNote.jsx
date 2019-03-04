@@ -6,7 +6,7 @@ import { Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
-import { CREATE_OR_UPDATE_NOTE } from '../queries/notes';
+import { CREATE_OR_UPDATE_NOTE, GET_ALL_NOTES } from '../queries/notes';
 import theme from '../theme';
 
 import Navbar from '../components/Navbar';
@@ -93,6 +93,7 @@ const AddNote = ({ history }) => {
         <Mutation
           mutation={CREATE_OR_UPDATE_NOTE}
           variables={{ title, tags, content: noteContent, id: noteId }}
+          refetchQueries={() => [{ query: GET_ALL_NOTES }]}
         >
           {(createOrUpdateNote, { loading, error }) => {
             if (loading) return <p>Loading...</p>;
