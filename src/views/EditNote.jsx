@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Query, Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
@@ -23,6 +23,7 @@ const EditNote = ({
   match: {
     params: { id },
   },
+  client,
 }) => {
   const [title, setTitle] = useState('');
   const [tagName, setTagName] = useState('');
@@ -30,10 +31,7 @@ const EditNote = ({
   const [noteContent, setNoteContent] = useState('');
   const [noteId] = useState(id);
   const [errors, setErrors] = useState({});
-
-  const [snapshotTitle, setSnapshotTitle] = useState('');
-  const [snapshotTags, setSnapshotTags] = useState([]);
-  const [snapshotNoteContent, setSnapshotNoteContent] = useState('');
+  const [snapshot, setSnapshot] = useState({});
 
   const uiCtx = useContext(uiContext);
 
@@ -53,19 +51,28 @@ const EditNote = ({
       .catch(err => console.log(err));
   };
 
+  const populateFields = async () => {
+    const { data } = await client.query({
+      query: GET_NOTE,
+      variables: { id: noteId },
+    });
+    console.log(data);
+    setTitle(data.getNote.title);
+    setTags(data.getNote.tags);
+    setNoteContent(data.getNote.content);
+    setSnapshot({
+      title: data.getNote.title,
+      tags: data.getNote.tags,
+      content: data.getNote.content,
+    });
+  };
+
+  useEffect(() => {
+    populateFields();
+  }, []);
+
   return (
-    <Query
-      query={GET_NOTE}
-      variables={{ id: noteId }}
-      onCompleted={data => {
-        setTitle(data.getNote.title);
-        setTags(data.getNote.tags);
-        setNoteContent(data.getNote.content);
-        setSnapshotTitle(data.getNote.title);
-        setSnapshotTags(data.getNote.tags);
-        setSnapshotNoteContent(data.getNote.noteContent);
-      }}
-    >
+    <Query query={GET_NOTE} variables={{ id: noteId }}>
       {({ data, loading, error }) => {
         return (
           <div data-testid="edit-note">
@@ -92,6 +99,7 @@ const EditNote = ({
                 marginBottom={`${spaces.md}px`}
               />
               <CKEditor
+                data={noteContent}
                 onInit={editor => {
                   editor.ui.view.editable.element.parentElement.insertBefore(
                     editor.ui.view.toolbar.element,
@@ -131,10 +139,12 @@ const EditNote = ({
 
 EditNote.propTypes = {
   match: PropTypes.shape({}),
+  client: PropTypes.shape({}),
 };
 
 EditNote.defaultProps = {
   match: {},
+  client: {},
 };
 
 export default EditNote;

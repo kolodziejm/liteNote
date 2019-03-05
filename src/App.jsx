@@ -1,4 +1,5 @@
 import React from 'react';
+import { ApolloConsumer } from 'react-apollo';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 
 import Landing from './views/Landing';
@@ -25,7 +26,11 @@ const App = () => {
         <Route path="/home" component={Home} />
         <Route
           path="/edit-note/:id"
-          render={props => <EditNote {...props} />}
+          render={props => (
+            <ApolloConsumer>
+              {client => <EditNote client={client} {...props} />}
+            </ApolloConsumer>
+          )}
         />
         <Route path="/add-note" component={AddNote} />
         <Route component={NotFound} />
