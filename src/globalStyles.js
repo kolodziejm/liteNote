@@ -54,6 +54,7 @@ body {
 }
 
 .ck-content {
+  padding: ${({ theme: { spaces } }) => `0 ${spaces.md}px`} !important;
   box-shadow: 0 3px 6px ${({ theme: { colors } }) => colors.shadow} !important;
   min-height: 40rem;
   font-size: 16px;
@@ -69,5 +70,10 @@ body {
     colors.lightGrey} !important;
   border-bottom: 1px solid transparent !important;
 }
+
+  @media only screen and (min-width: ${({ theme: { breakpoints } }) =>
+    breakpoints.tabPort}) {
+    padding: ${({ theme: { spaces } }) => `0 ${spaces.lg}px`} !important;
+  }
 
 `;
