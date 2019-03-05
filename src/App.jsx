@@ -23,7 +23,10 @@ const App = () => {
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
-        <Route path="/edit-note/:id" component={EditNote} />
+        <Route
+          path="/edit-note/:id"
+          render={props => <EditNote {...props} />}
+        />
         <Route path="/add-note" component={AddNote} />
         <Route component={NotFound} />
       </Switch>

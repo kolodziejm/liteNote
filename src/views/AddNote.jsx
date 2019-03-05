@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
@@ -46,7 +45,7 @@ const AddNote = ({ history }) => {
   };
 
   return (
-    <div data-testid="note-view">
+    <div data-testid="add-note">
       <Navbar simple />
       <NoteContainer>
         <Field

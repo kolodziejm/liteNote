@@ -3,7 +3,6 @@ import { gql } from 'apollo-boost';
 export const GET_NOTE = gql`
   query($id: ID!) {
     getNote(id: $id) {
-      _id
       title
       content
       tags {
