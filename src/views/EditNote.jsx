@@ -41,8 +41,8 @@ const EditNote = ({
     e.preventDefault();
     // title validation (can't be empty)
     updateNote()
-      .then(({ data: { createOrUpdateNote: { note, errors: resErrors } } }) => {
-        console.log(note, resErrors);
+      .then(({ data: { createOrUpdateNote: { errors: resErrors } } }) => {
+        console.log(resErrors);
         uiCtx.noteSaved = true;
       })
       .catch(err => console.log(err));

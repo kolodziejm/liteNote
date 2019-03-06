@@ -4,6 +4,7 @@ export default {
     background: '#F8F8F8',
     darkGrey: '#333333',
     body: '#555555',
+    lightBody: '#707070',
     lightGrey: '#D8D8D8',
     primary: '#531CB3',
     secondary: '#97DFFC',
