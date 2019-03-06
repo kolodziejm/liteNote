@@ -23,7 +23,14 @@ const App = () => {
         <Route exact path="/" component={Landing} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/home" component={Home} />
+        <Route
+          path="/home"
+          render={props => (
+            <ApolloConsumer>
+              {client => <Home client={client} {...props} />}
+            </ApolloConsumer>
+          )}
+        />
         <Route
           path="/edit-note/:id"
           render={props => (

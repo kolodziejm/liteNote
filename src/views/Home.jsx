@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
@@ -90,7 +90,7 @@ const Search = ({
     {searchMethod === 'title' ? (
       <Input
         value={title}
-        onChange={e => setTitle(e.target.value)}
+        onChange={setTitle}
         placeholder="Start typing the title..."
       />
     ) : (
@@ -107,11 +107,14 @@ const Search = ({
   </SearchContainer>
 );
 
-const Home = ({ history }) => {
+const Home = ({ history, client }) => {
   const [searchMethod, setSearchMethod] = useState('title');
   const [title, setTitle] = useState('');
   const [tagName, setTagName] = useState('');
   const [tags, setTags] = useState([]);
+  const [notes, setNotes] = useState([]);
+  const [filteredNotes, setFilteredNotes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const addTag = (e, newTagName) => {
     e.preventDefault();
@@ -119,80 +122,91 @@ const Home = ({ history }) => {
     // ... setTags() ...
   };
 
-  const searchByTitle = () => {};
+  const filterByTitle = e => {
+    if (loading) return;
+    setTitle(e.target.value);
+    const notesCopy = [...notes];
+    const filteredArr = notesCopy.filter(({ title: noteTitle }) =>
+      noteTitle.includes(e.target.value)
+    );
+    setFilteredNotes(filteredArr);
+    console.log(filteredNotes);
+  };
+
+  const fetchNotes = async () => {
+    const { data } = await client.query({
+      query: GET_ALL_NOTES,
+    });
+    console.log(data.getAllNotes);
+    setNotes(data.getAllNotes);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  const mappedNotes = notesToMap =>
+    notesToMap.map(({ _id, title: noteTitle, excerpt, tags: noteTags }) => {
+      const tagList = noteTags.map(({ _id: tagId, tagName: name }) => (
+        <div key={tagId}>{name}</div>
+      ));
+      return (
+        <Note
+          key={_id}
+          title={noteTitle}
+          excerpt={excerpt}
+          tags={noteTags}
+          margin={`0 0 ${spaces.md}px 0`}
+        />
+      );
+    });
 
   return (
     <div data-testid="home-page">
-      <Query query={GET_ALL_NOTES}>
-        {({ data, loading, error }) => {
-          console.log(data, loading);
-          return (
-            <>
-              <Navbar />
-              <ContentLimiter>
-                <MainContainer>
-                  <Search
-                    searchMethod={searchMethod}
-                    setSearchMethod={setSearchMethod}
-                    title={title}
-                    setTitle={setTitle}
-                    tagName={tagName}
-                    setTagName={setTagName}
-                    tags={tags}
-                    addTag={addTag}
-                  />
-                  {loading ? (
-                    <Center>
-                      <ClipLoader
-                        loading={loading}
-                        color={theme.colors.secondary}
-                        sizeUnit="rem"
-                        size={6}
-                      />
-                    </Center>
-                  ) : (
-                    <NotesList>
-                      {data.getAllNotes.map(
-                        ({
-                          _id,
-                          title: noteTitle,
-                          excerpt,
-                          tags: noteTags,
-                        }) => {
-                          const tagList = noteTags.map(
-                            ({ _id: tagId, tagName: name }) => (
-                              <div key={tagId}>{name}</div>
-                            )
-                          );
-                          return (
-                            <Note
-                              key={_id}
-                              title={noteTitle}
-                              excerpt={excerpt}
-                              tags={noteTags}
-                              margin={`0 0 ${spaces.md}px 0`}
-                            />
-                          );
-                        }
-                      )}
-                    </NotesList>
-                  )}
-                </MainContainer>
-              </ContentLimiter>
-            </>
-          );
-        }}
-      </Query>
+      <Navbar />
+      <ContentLimiter>
+        <MainContainer>
+          <Search
+            searchMethod={searchMethod}
+            setSearchMethod={setSearchMethod}
+            title={title}
+            setTitle={filterByTitle}
+            tagName={tagName}
+            setTagName={setTagName}
+            tags={tags}
+            addTag={addTag}
+          />
+          {loading ? (
+            <Center>
+              <ClipLoader
+                loading={loading}
+                color={theme.colors.secondary}
+                sizeUnit="rem"
+                size={6}
+              />
+            </Center>
+          ) : (
+            <NotesList>
+              {title || tags.length
+                ? mappedNotes(filteredNotes)
+                : mappedNotes(notes)}
+            </NotesList>
+          )}
+        </MainContainer>
+      </ContentLimiter>
     </div>
   );
 };
 
 Home.propTypes = {
   history: PropTypes.shape({}),
+  client: PropTypes.shape({}),
 };
 
 Home.defaultProps = {
   history: {},
+  client: {},
 };
 
 Search.propTypes = {
