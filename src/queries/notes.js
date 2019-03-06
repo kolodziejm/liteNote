@@ -27,18 +27,23 @@ export const GET_ALL_NOTES = gql`
   }
 `;
 
-export const CREATE_OR_UPDATE_NOTE = gql`
+export const CREATE_NOTE = gql`
   mutation($title: String!, $tags: [TagInput], $content: String, $id: ID) {
     createOrUpdateNote(title: $title, tags: $tags, content: $content, id: $id) {
       note {
         _id
-        title
-        content
-        tags {
-          id
-          tagName
-        }
       }
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const UPDATE_NOTE = gql`
+  mutation($title: String!, $tags: [TagInput], $content: String, $id: ID) {
+    createOrUpdateNote(title: $title, tags: $tags, content: $content, id: $id) {
       errors {
         field
         message

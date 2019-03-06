@@ -21,6 +21,6 @@ export default styled.input`
 
   &::placeholder {
     font-style: italic;
-    color: ${({ theme: { colors } }) => colors.body};
+    color: ${({ theme: { colors } }) => colors.shadow};
   }
 `;
