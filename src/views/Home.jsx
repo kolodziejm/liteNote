@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
-import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { ClipLoader } from 'react-spinners';
+import uniqid from 'uniqid';
 
 import theme from '../theme';
 import { GET_ALL_NOTES } from '../queries/notes';
@@ -76,13 +76,13 @@ const Search = ({
       <Button
         margin={`0 ${spaces.xs}px 0 0`}
         selected={searchMethod === 'title'}
-        onClick={() => setSearchMethod('title')}
+        onClick={() => setSearchMethod('title')} // oraz wyczyść filtry
       >
         Title
       </Button>
       <Button
         selected={searchMethod === 'tags'}
-        onClick={() => setSearchMethod('tags')}
+        onClick={() => setSearchMethod('tags')} // oraz wyczyść filtry
       >
         Tags
       </Button>
@@ -118,15 +118,18 @@ const Home = ({ history, client }) => {
 
   const addTag = (e, newTagName) => {
     e.preventDefault();
+    if (loading) return;
     console.log(tagName);
-    // ... setTags() ...
+    const newTag = { id: uniqid(), tagName: newTagName };
+    setTags([...tags, newTag]);
+    setTagName('');
+    console.log(tags);
   };
 
   const filterByTitle = e => {
     if (loading) return;
     setTitle(e.target.value);
-    const notesCopy = [...notes];
-    const filteredArr = notesCopy.filter(({ title: noteTitle }) =>
+    const filteredArr = notes.filter(({ title: noteTitle }) =>
       noteTitle.includes(e.target.value)
     );
     setFilteredNotes(filteredArr);
@@ -145,6 +148,19 @@ const Home = ({ history, client }) => {
   useEffect(() => {
     fetchNotes();
   }, []);
+
+  useEffect(() => {
+    const stateTagsNames = tags.map(
+      ({ tagName: stateTagName }) => stateTagName
+    );
+    const filteredArr = notes.map(({ tags: noteTags }) => {
+      // noteTags - tagi danej notatki
+      const noteTagsNames = noteTags.map(({ tName }) => tName);
+      // aby notatka byla wyfiltrowana pozytywnie musi posiadac wszystkie obecnie ustawione w state tagi
+      return true;
+    });
+    console.log(filteredArr);
+  }, [tags]);
 
   const mappedNotes = notesToMap =>
     notesToMap.map(({ _id, title: noteTitle, excerpt, tags: noteTags }) => {

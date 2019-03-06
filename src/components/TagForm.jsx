@@ -47,10 +47,9 @@ const TagForm = ({
     />
     <input type="submit" style={{ display: 'none' }} />
     <FlexList>
-      {/* OUTPUT TAGS HERE */}
-      <Tag name="Some tag" clicked={() => {}} />
-      <Tag name="Some tag name" clicked={() => {}} />
-      <Tag name="Some tag name long" clicked={() => {}} />
+      {tags.map(({ id: tagId, tagName: tName }) => (
+        <Tag key={tagId} name={tName} clicked={() => {}} />
+      ))}
     </FlexList>
   </Form>
 );
