@@ -69,6 +69,7 @@ const Search = ({
   setTagName,
   tags,
   addTag,
+  deleteTag,
 }) => (
   <SearchContainer>
     <ButtonContainer>
@@ -96,6 +97,7 @@ const Search = ({
     ) : (
       <TagForm
         addTag={addTag}
+        deleteTag={deleteTag}
         setTagName={setTagName}
         tagName={tagName}
         tags={tags}
@@ -124,6 +126,12 @@ const Home = ({ history, client }) => {
     setTags([...tags, newTag]);
     setTagName('');
     console.log(tags);
+  };
+
+  const deleteTag = (e, tagId) => {
+    e.preventDefault();
+    const tagsAfterDelete = tags.filter(tag => tag.id !== tagId);
+    setTags(tagsAfterDelete);
   };
 
   const filterByTitle = e => {
@@ -192,6 +200,7 @@ const Home = ({ history, client }) => {
             setTagName={setTagName}
             tags={tags}
             addTag={addTag}
+            deleteTag={deleteTag}
           />
           {loading ? (
             <Center>
@@ -231,6 +240,7 @@ Search.propTypes = {
   setTitle: PropTypes.func.isRequired,
   setTagName: PropTypes.func.isRequired,
   addTag: PropTypes.func.isRequired,
+  deleteTag: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   tagName: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.object).isRequired,

@@ -21,6 +21,7 @@ const Form = styled.form`
 
 const TagForm = ({
   addTag,
+  deleteTag,
   tagName,
   setTagName,
   tags,
@@ -48,7 +49,7 @@ const TagForm = ({
     <input type="submit" style={{ display: 'none' }} />
     <FlexList>
       {tags.map(({ id: tagId, tagName: tName }) => (
-        <Tag key={tagId} name={tName} clicked={() => {}} />
+        <Tag key={tagId} name={tName} clicked={e => deleteTag(e, tagId)} />
       ))}
     </FlexList>
   </Form>
@@ -56,6 +57,7 @@ const TagForm = ({
 
 TagForm.propTypes = {
   addTag: PropTypes.func.isRequired,
+  deleteTag: PropTypes.func.isRequired,
   tagName: PropTypes.string.isRequired,
   setTagName: PropTypes.func.isRequired,
   tags: PropTypes.arrayOf(PropTypes.object),
