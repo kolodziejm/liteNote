@@ -53,6 +53,7 @@ const EditNote = ({
     setErrors({});
     updateNote()
       .then(({ data: { createOrUpdateNote: { errors: resErrors } } }) => {
+        // set snapshot to the response, change updateNote fields
         console.log(resErrors);
         uiCtx.noteSaved = true;
       })
@@ -64,6 +65,9 @@ const EditNote = ({
       query: GET_NOTE,
       variables: { id: noteId },
     });
+    // eslint-disable-next-line no-param-reassign
+    const noTypenameTags = data.getNote.tags.map(tag => delete tag.__typename);
+    console.log(noTypenameTags);
     setLoading(false);
     setTitle(data.getNote.title);
     setTags(data.getNote.tags);
@@ -78,6 +82,8 @@ const EditNote = ({
   useEffect(() => {
     populateFields();
   }, []);
+
+  console.log(tags);
 
   return (
     <div data-testid="edit-note">
@@ -123,7 +129,10 @@ const EditNote = ({
         <Mutation
           mutation={UPDATE_NOTE}
           variables={{ title, tags, content: noteContent, id: noteId }}
-          refetchQueries={() => [{ query: GET_ALL_NOTES }]}
+          refetchQueries={() => [
+            { query: GET_ALL_NOTES },
+            { query: GET_NOTE, variables: { id: noteId } },
+          ]}
         >
           {(updateNote, { saveLoading, saveError }) => {
             if (saveLoading) return <p>Loading...</p>;

@@ -6,7 +6,7 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 0,
     'consistent-return': 0,
     'react/require-default-props': 1,
-    'no-underscore-dangle': ['error', { allow: ['_id'] }], // for mongoDB,
+    'no-underscore-dangle': ['error', { allow: ['_id', '__typename'] }], // for mongoDB and apollo
     'react-hooks/rules-of-hooks': 'error',
     'no-unused-vars': 1
   },
