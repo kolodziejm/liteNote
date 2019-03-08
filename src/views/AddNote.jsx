@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+import uniqid from 'uniqid';
 
 import { CREATE_NOTE, GET_ALL_NOTES } from '../queries/notes';
 import theme from '../theme';
@@ -13,6 +14,7 @@ import Navbar from '../components/Navbar';
 import Field from '../components/ui/Field';
 import TagForm from '../components/TagForm';
 import NoteContainer from '../components/helpers/NoteContainer';
+import Helper from '../components/typography/Helper';
 
 const { spaces } = theme;
 
@@ -27,17 +29,28 @@ const AddNote = ({ history }) => {
 
   const addTag = (e, newTagName) => {
     e.preventDefault();
-    console.log(tagName);
-    // ... setTags() ...
+    if (newTagName.length > 30)
+      return setErrors({ tagName: 'Tag name has to be at most 30 characters' });
+    setErrors({});
+    const newTag = { id: uniqid(), tagName: newTagName };
+    setTags([...tags, newTag]);
+    setTagName('');
+  };
+
+  const deleteTag = (e, tagId) => {
+    e.preventDefault();
+    const tagsAfterDelete = tags.filter(tag => tag.id !== tagId);
+    setTags(tagsAfterDelete);
   };
 
   const saveNote = (e, createNote) => {
     e.preventDefault();
-    // title validation (can't be empty)
+    if (!title) return setErrors({ title: 'Set a title for the note' });
+    setErrors({});
     createNote()
       .then(({ data: { createOrUpdateNote: { note, errors: resErrors } } }) => {
         uiCtx.noteSaved = true;
-        history.push(`/edit-note/${note._id}`); // redirect user to a single note page  - editNote view - /edit-note/:id path. Better UX, if he'd refresh the page it won't be blank, it will be filled with the created note data.
+        history.push(`/edit-note/${note._id}`);
       })
       .catch(err => console.log(err));
   };
@@ -54,9 +67,12 @@ const AddNote = ({ history }) => {
           required
           value={title}
           changed={e => setTitle(e.target.value)}
+          error={errors.title}
+          helper={errors.title}
         />
         <TagForm
           addTag={addTag}
+          deleteTag={deleteTag}
           setTagName={setTagName}
           tagName={tagName}
           tags={tags}
@@ -64,8 +80,11 @@ const AddNote = ({ history }) => {
           id="create-tag"
           name="create-tag"
           label="Add tags - optional"
-          marginBottom={`${spaces.md}px`}
+          error={errors.tagName}
         />
+        <Helper margin={`0 0 ${spaces.md}px 0`} error={errors.tagName}>
+          {errors.tagName}
+        </Helper>
         <CKEditor
           onInit={editor => {
             editor.ui.view.editable.element.parentElement.insertBefore(

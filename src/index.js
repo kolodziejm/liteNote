@@ -10,6 +10,7 @@ import { ThemeProvider } from 'styled-components';
 import theme from './theme';
 import GlobalStyles from './globalStyles';
 
+// jwtDecode token for every request and check if it is still valid.
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   request: operation => {

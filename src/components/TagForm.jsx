@@ -30,6 +30,7 @@ const TagForm = ({
   name,
   label,
   marginBottom,
+  error,
 }) => (
   <Form marginBottom={marginBottom} onSubmit={e => addTag(e, tagName)}>
     {label && (
@@ -45,6 +46,7 @@ const TagForm = ({
       required
       id={id}
       name={name}
+      error={error}
     />
     <input type="submit" style={{ display: 'none' }} />
     <FlexList>
@@ -66,6 +68,7 @@ TagForm.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
   marginBottom: PropTypes.string,
+  error: PropTypes.string,
 };
 
 TagForm.defaultProps = {
@@ -73,6 +76,7 @@ TagForm.defaultProps = {
   placeholder: '',
   label: '',
   marginBottom: '0',
+  error: '',
 };
 
 export default TagForm;

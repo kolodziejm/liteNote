@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+import uniqid from 'uniqid';
 
 import { UPDATE_NOTE, GET_ALL_NOTES, GET_NOTE } from '../queries/notes';
 import theme from '../theme';
@@ -28,18 +29,28 @@ const EditNote = ({
   const [noteId] = useState(id);
   const [errors, setErrors] = useState({});
   const [snapshot, setSnapshot] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const uiCtx = useContext(uiContext);
 
   const addTag = (e, newTagName) => {
     e.preventDefault();
-    console.log(tagName);
-    // ... setTags() ...
+    if (loading) return;
+    const newTag = { id: uniqid(), tagName: newTagName };
+    setTags([...tags, newTag]);
+    setTagName('');
+  };
+
+  const deleteTag = (e, tagId) => {
+    e.preventDefault();
+    const tagsAfterDelete = tags.filter(tag => tag.id !== tagId);
+    setTags(tagsAfterDelete);
   };
 
   const saveNote = (e, updateNote) => {
     e.preventDefault();
-    // title validation (can't be empty)
+    if (!title) return setErrors({ title: 'Set a title for the note' });
+    setErrors({});
     updateNote()
       .then(({ data: { createOrUpdateNote: { errors: resErrors } } }) => {
         console.log(resErrors);
@@ -53,7 +64,7 @@ const EditNote = ({
       query: GET_NOTE,
       variables: { id: noteId },
     });
-    console.log(data);
+    setLoading(false);
     setTitle(data.getNote.title);
     setTags(data.getNote.tags);
     setNoteContent(data.getNote.content);
@@ -80,9 +91,12 @@ const EditNote = ({
           required
           value={title}
           changed={e => setTitle(e.target.value)}
+          error={errors.title}
+          helper={errors.title}
         />
         <TagForm
           addTag={addTag}
+          deleteTag={deleteTag}
           setTagName={setTagName}
           tagName={tagName}
           tags={tags}
