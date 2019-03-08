@@ -12,14 +12,13 @@ import FlexList from './helpers/FlexList';
 
 const { spaces } = theme;
 
-const Note = ({ title, excerpt, margin }) => (
+const Note = ({ title, excerpt, margin, tags }) => (
   <Card maxWidth="320px" margin={margin}>
     <MdHeading margin={`0 0 ${spaces.sm}px 0`}>{title}</MdHeading>
     <FlexList>
-      <SimpleTag>Tag 1</SimpleTag>
-      <SimpleTag>Tag 2</SimpleTag>
-      <SimpleTag>Tag 3 longer</SimpleTag>
-      <SimpleTag>Tag 4 extremely long</SimpleTag>
+      {tags.map(({ id, tagName }) => (
+        <SimpleTag key={id}>{tagName}</SimpleTag>
+      ))}
     </FlexList>
     <Paragraph>{excerpt}</Paragraph>
   </Card>
@@ -27,13 +26,13 @@ const Note = ({ title, excerpt, margin }) => (
 
 Note.propTypes = {
   title: PropTypes.string.isRequired,
-  // tags: PropTypes.arrayOf(PropTypes.object),
+  tags: PropTypes.arrayOf(PropTypes.object),
   excerpt: PropTypes.string,
   margin: PropTypes.string,
 };
 
 Note.defaultProps = {
-  // tags: [],
+  tags: [],
   excerpt: '',
   margin: '0',
 };

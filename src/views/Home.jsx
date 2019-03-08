@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ClipLoader } from 'react-spinners';
 import uniqid from 'uniqid';
+import _ from 'lodash';
 
 import theme from '../theme';
 import { GET_ALL_NOTES } from '../queries/notes';
@@ -121,11 +122,9 @@ const Home = ({ history, client }) => {
   const addTag = (e, newTagName) => {
     e.preventDefault();
     if (loading) return;
-    console.log(tagName);
     const newTag = { id: uniqid(), tagName: newTagName };
     setTags([...tags, newTag]);
     setTagName('');
-    console.log(tags);
   };
 
   const deleteTag = (e, tagId) => {
@@ -141,14 +140,12 @@ const Home = ({ history, client }) => {
       noteTitle.includes(e.target.value)
     );
     setFilteredNotes(filteredArr);
-    console.log(filteredNotes);
   };
 
   const fetchNotes = async () => {
     const { data } = await client.query({
       query: GET_ALL_NOTES,
     });
-    console.log(data.getAllNotes);
     setNotes(data.getAllNotes);
     setLoading(false);
   };
@@ -161,30 +158,25 @@ const Home = ({ history, client }) => {
     const stateTagsNames = tags.map(
       ({ tagName: stateTagName }) => stateTagName
     );
-    const filteredArr = notes.map(({ tags: noteTags }) => {
-      // noteTags - tagi danej notatki
-      const noteTagsNames = noteTags.map(({ tName }) => tName);
-      // aby notatka byla wyfiltrowana pozytywnie musi posiadac wszystkie obecnie ustawione w state tagi
-      return true;
+    const notesMatchingTags = notes.filter(({ tags: noteTags }) => {
+      const noteTagsNames = [];
+      noteTags.forEach(tag => noteTagsNames.push(tag.tagName));
+      return _.isEmpty(_.xor(stateTagsNames, noteTagsNames));
     });
-    console.log(filteredArr);
+
+    setFilteredNotes(notesMatchingTags);
   }, [tags]);
 
   const mappedNotes = notesToMap =>
-    notesToMap.map(({ _id, title: noteTitle, excerpt, tags: noteTags }) => {
-      const tagList = noteTags.map(({ _id: tagId, tagName: name }) => (
-        <div key={tagId}>{name}</div>
-      ));
-      return (
-        <Note
-          key={_id}
-          title={noteTitle}
-          excerpt={excerpt}
-          tags={noteTags}
-          margin={`0 0 ${spaces.md}px 0`}
-        />
-      );
-    });
+    notesToMap.map(({ _id, title: noteTitle, excerpt, tags: noteTags }) => (
+      <Note
+        key={_id}
+        title={noteTitle}
+        excerpt={excerpt}
+        tags={noteTags}
+        margin={`0 0 ${spaces.md}px 0`}
+      />
+    ));
 
   return (
     <div data-testid="home-page">
