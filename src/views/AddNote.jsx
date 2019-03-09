@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
@@ -30,8 +30,10 @@ const AddNote = ({ history }) => {
   const addTag = (e, newTagName) => {
     e.preventDefault();
     const tagAlreadyInArray = tags.findIndex(tag => tag.tagName === newTagName);
-    if (tagAlreadyInArray !== -1)
+    if (tagAlreadyInArray !== -1) {
       return setErrors({ tagName: 'This tag is already set' });
+    }
+
     if (tags.length >= 6)
       return setErrors({ tagName: 'Note can have a maximum of 6 tags' });
     if (newTagName.length > 30)
@@ -59,6 +61,14 @@ const AddNote = ({ history }) => {
       })
       .catch(err => console.log(err));
   };
+
+  useEffect(() => {
+    if (errors.tagName) {
+      setTimeout(() => {
+        setErrors({ tagName: '' });
+      }, 5000);
+    }
+  }, [errors]);
 
   return (
     <div data-testid="add-note">
