@@ -78,13 +78,13 @@ const Search = ({
       <Button
         margin={`0 ${spaces.xs}px 0 0`}
         selected={searchMethod === 'title'}
-        onClick={() => setSearchMethod('title')} // oraz wyczyść filtry
+        onClick={() => setSearchMethod('title')}
       >
         Title
       </Button>
       <Button
         selected={searchMethod === 'tags'}
-        onClick={() => setSearchMethod('tags')} // oraz wyczyść filtry
+        onClick={() => setSearchMethod('tags')}
       >
         Tags
       </Button>
@@ -118,6 +118,16 @@ const Home = ({ history, client }) => {
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const changeSearchMethod = method => {
+    setSearchMethod(method);
+    if (method === 'title') {
+      setTags([]);
+      setTagName('');
+    } else {
+      setTitle('');
+    }
+  };
 
   const addTag = (e, newTagName) => {
     e.preventDefault();
@@ -184,7 +194,7 @@ const Home = ({ history, client }) => {
         <MainContainer>
           <Search
             searchMethod={searchMethod}
-            setSearchMethod={setSearchMethod}
+            setSearchMethod={changeSearchMethod}
             title={title}
             setTitle={filterByTitle}
             tagName={tagName}
