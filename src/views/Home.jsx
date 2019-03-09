@@ -147,7 +147,7 @@ const Home = ({ history, client }) => {
     if (loading) return;
     setTitle(e.target.value);
     const filteredArr = notes.filter(({ title: noteTitle }) =>
-      noteTitle.includes(e.target.value)
+      noteTitle.toLowerCase().includes(e.target.value)
     );
     setFilteredNotes(filteredArr);
   };
@@ -165,12 +165,12 @@ const Home = ({ history, client }) => {
   }, []);
 
   useEffect(() => {
-    const stateTagsNames = tags.map(
-      ({ tagName: stateTagName }) => stateTagName
+    const stateTagsNames = tags.map(({ tagName: stateTagName }) =>
+      stateTagName.toLowerCase()
     );
     const notesMatchingTags = notes.filter(({ tags: noteTags }) => {
       const noteTagsNames = [];
-      noteTags.forEach(tag => noteTagsNames.push(tag.tagName));
+      noteTags.forEach(tag => noteTagsNames.push(tag.tagName.toLowerCase()));
       return _.isEmpty(_.xor(stateTagsNames, noteTagsNames));
     });
     setFilteredNotes(notesMatchingTags);

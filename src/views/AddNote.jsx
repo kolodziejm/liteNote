@@ -5,6 +5,7 @@ import { Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import uniqid from 'uniqid';
+import { ClipLoader } from 'react-spinners';
 
 import { CREATE_NOTE, GET_ALL_NOTES } from '../queries/notes';
 import theme from '../theme';
@@ -15,8 +16,9 @@ import Field from '../components/ui/Field';
 import TagForm from '../components/TagForm';
 import NoteContainer from '../components/helpers/NoteContainer';
 import Helper from '../components/typography/Helper';
+import ActionButton from '../components/ui/ActionButton';
 
-const { spaces } = theme;
+const { spaces, spacingUnit } = theme;
 
 const AddNote = ({ history }) => {
   const [title, setTitle] = useState('');
@@ -119,11 +121,30 @@ const AddNote = ({ history }) => {
           refetchQueries={() => [{ query: GET_ALL_NOTES }]}
         >
           {(createNote, { loading, error }) => {
-            if (loading) return <p>Loading...</p>;
             return (
-              <button type="submit" onClick={e => saveNote(e, createNote)}>
-                Save
-              </button>
+              <ActionButton
+                noPadding
+                success
+                disabled={loading}
+                width="13.4rem"
+                height="4.3rem"
+                margin={`${spaces.md}px 0 0 0`}
+                type="submit"
+                onClick={e => saveNote(e, createNote)}
+              >
+                {loading ? (
+                  <span data-testid="spinner">
+                    <ClipLoader
+                      loading={loading}
+                      color={theme.colors.primary}
+                      sizeUnit="rem"
+                      size={2}
+                    />
+                  </span>
+                ) : (
+                  'Create note'
+                )}
+              </ActionButton>
             );
           }}
         </Mutation>
