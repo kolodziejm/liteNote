@@ -163,7 +163,6 @@ const Home = ({ history, client }) => {
       noteTags.forEach(tag => noteTagsNames.push(tag.tagName));
       return _.isEmpty(_.xor(stateTagsNames, noteTagsNames));
     });
-
     setFilteredNotes(notesMatchingTags);
   }, [tags]);
 

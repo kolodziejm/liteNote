@@ -29,6 +29,11 @@ const AddNote = ({ history }) => {
 
   const addTag = (e, newTagName) => {
     e.preventDefault();
+    const tagAlreadyInArray = tags.findIndex(tag => tag.tagName === newTagName);
+    if (tagAlreadyInArray !== -1)
+      return setErrors({ tagName: 'This tag is already set' });
+    if (tags.length >= 6)
+      return setErrors({ tagName: 'Note can have a maximum of 6 tags' });
     if (newTagName.length > 30)
       return setErrors({ tagName: 'Tag name has to be at most 30 characters' });
     setErrors({});
