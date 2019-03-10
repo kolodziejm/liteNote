@@ -18,6 +18,7 @@ import Button from '../components/ui/Button';
 import Center from '../components/helpers/Center';
 import Note from '../components/Note';
 import TagForm from '../components/TagForm';
+import { StyledLink } from '../components/ui/Link';
 
 const { spaces, breakpoints } = theme;
 
@@ -178,13 +179,14 @@ const Home = ({ history, client }) => {
 
   const mappedNotes = notesToMap =>
     notesToMap.map(({ _id, title: noteTitle, excerpt, tags: noteTags }) => (
-      <Note
-        key={_id}
-        title={noteTitle}
-        excerpt={excerpt}
-        tags={noteTags}
-        margin={`0 0 ${spaces.md}px 0`}
-      />
+      <StyledLink key={_id} to={`/edit-note/${_id}`}>
+        <Note
+          title={noteTitle}
+          excerpt={excerpt}
+          tags={noteTags}
+          margin={`0 0 ${spaces.md}px 0`}
+        />
+      </StyledLink>
     ));
 
   return (

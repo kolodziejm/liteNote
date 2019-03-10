@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Prompt } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import { ClipLoader } from 'react-spinners';
 import CKEditor from '@ckeditor/ckeditor5-react';
@@ -16,6 +17,7 @@ import Field from '../components/ui/Field';
 import TagForm from '../components/TagForm';
 import NoteContainer from '../components/helpers/NoteContainer';
 import ActionButton from '../components/ui/ActionButton';
+import Helper from '../components/typography/Helper';
 
 const { spaces } = theme;
 
@@ -44,7 +46,16 @@ const EditNote = ({
 
   const addTag = (e, newTagName) => {
     e.preventDefault();
-    if (loading) return;
+    const tagAlreadyInArray = tags.findIndex(tag => tag.tagName === newTagName);
+    if (tagAlreadyInArray !== -1) {
+      return setErrors({ tagName: 'This tag is already set' });
+    }
+
+    if (tags.length >= 6)
+      return setErrors({ tagName: 'Note can have a maximum of 6 tags' });
+    if (newTagName.length > 30)
+      return setErrors({ tagName: 'Tag name has to be at most 30 characters' });
+    setErrors({});
     const newTag = { id: uniqid(), tagName: newTagName };
     setTags([...tags, newTag]);
     setTagName('');
@@ -60,12 +71,34 @@ const EditNote = ({
     e.preventDefault();
     if (!title) return setErrors({ title: 'Set a title for the note' });
     setErrors({});
+    setLoading(true);
     updateNote()
-      .then(({ data: { createOrUpdateNote: { errors: resErrors } } }) => {
-        // set snapshot to the response, change updateNote fields
-        console.log(resErrors);
-        uiCtx.noteSaved = true;
-      })
+      .then(
+        ({
+          data: {
+            createOrUpdateNote: {
+              note: { title: resTitle, tags: resTags, content: resContent },
+              errors: resErrors,
+            },
+          },
+        }) => {
+          resTags.forEach(
+            // eslint-disable-next-line no-param-reassign
+            tag => delete tag.__typename
+          );
+          setTitle(resTitle);
+          setTags(resTags);
+          setNoteContent(resContent);
+          setSnapshot({
+            title: resTitle,
+            tags: resTags,
+            content: resContent,
+          });
+          setLoading(false);
+          setNotesDiffer(false);
+          uiCtx.noteSaved = true;
+        }
+      )
       .catch(err => console.log(err));
   };
 
@@ -75,11 +108,11 @@ const EditNote = ({
         query: GET_NOTE,
         variables: { id: noteId },
       });
-      const noTypenameTags = data.getNote.tags.map(
+      data.getNote.tags.forEach(
         // eslint-disable-next-line no-param-reassign
         tag => delete tag.__typename
       );
-      await setTitle(data.getNote.title);
+      setTitle(data.getNote.title);
       setTags(data.getNote.tags);
       setNoteContent(data.getNote.content);
       setSnapshot({
@@ -91,7 +124,6 @@ const EditNote = ({
       setNotesDiffer(false);
     };
     fetchData();
-    console.log(noteContent);
   }, []);
 
   useEffect(() => {
@@ -103,7 +135,9 @@ const EditNote = ({
   }, [title]);
 
   useEffect(() => {
-    if (!_.isEqual(tags, snapshot.tags)) {
+    const tagNames = tags.map(tag => tag.tagName);
+    const snapshotTagNames = snapshot.tags.map(tag => tag.tagName);
+    if (!_.isEqual(tagNames, snapshotTagNames)) {
       setNotesDiffer(true);
     } else {
       setNotesDiffer(false);
@@ -117,6 +151,14 @@ const EditNote = ({
       setNotesDiffer(false);
     }
   }, [noteContent]);
+
+  useEffect(() => {
+    if (errors.tagName) {
+      setTimeout(() => {
+        setErrors({ tagName: '' });
+      }, 5000);
+    }
+  }, [errors]);
 
   return (
     <div data-testid="edit-note">
@@ -144,7 +186,11 @@ const EditNote = ({
           name="create-tag"
           label="Add tags - optional"
           marginBottom={`${spaces.md}px`}
+          error={errors.tagName}
         />
+        <Helper margin={`0 0 ${spaces.md}px 0`} error={errors.tagName}>
+          {errors.tagName}
+        </Helper>
         <CKEditor
           data={noteContent}
           disabled={loading}
@@ -197,6 +243,10 @@ const EditNote = ({
             );
           }}
         </Mutation>
+        <Prompt
+          when={notesDiffer}
+          message="You have unsaved changes, are you sure you want to leave?"
+        />
       </NoteContainer>
     </div>
   );
