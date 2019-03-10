@@ -1,9 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
+import { ClipLoader } from 'react-spinners';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import uniqid from 'uniqid';
+import _ from 'lodash';
 
 import { UPDATE_NOTE, GET_ALL_NOTES, GET_NOTE } from '../queries/notes';
 import theme from '../theme';
@@ -13,6 +15,7 @@ import Navbar from '../components/Navbar';
 import Field from '../components/ui/Field';
 import TagForm from '../components/TagForm';
 import NoteContainer from '../components/helpers/NoteContainer';
+import ActionButton from '../components/ui/ActionButton';
 
 const { spaces } = theme;
 
@@ -28,8 +31,14 @@ const EditNote = ({
   const [noteContent, setNoteContent] = useState('');
   const [noteId] = useState(id);
   const [errors, setErrors] = useState({});
-  const [snapshot, setSnapshot] = useState({});
+  const [snapshot, setSnapshot] = useState({
+    title: '',
+    tags: [],
+    noteContent: '',
+  });
+
   const [loading, setLoading] = useState(true);
+  const [notesDiffer, setNotesDiffer] = useState(false);
 
   const uiCtx = useContext(uiContext);
 
@@ -60,30 +69,54 @@ const EditNote = ({
       .catch(err => console.log(err));
   };
 
-  const populateFields = async () => {
-    const { data } = await client.query({
-      query: GET_NOTE,
-      variables: { id: noteId },
-    });
-    // eslint-disable-next-line no-param-reassign
-    const noTypenameTags = data.getNote.tags.map(tag => delete tag.__typename);
-    console.log(noTypenameTags);
-    setLoading(false);
-    setTitle(data.getNote.title);
-    setTags(data.getNote.tags);
-    setNoteContent(data.getNote.content);
-    setSnapshot({
-      title: data.getNote.title,
-      tags: data.getNote.tags,
-      content: data.getNote.content,
-    });
-  };
-
   useEffect(() => {
-    populateFields();
+    const fetchData = async () => {
+      const { data } = await client.query({
+        query: GET_NOTE,
+        variables: { id: noteId },
+      });
+      const noTypenameTags = data.getNote.tags.map(
+        // eslint-disable-next-line no-param-reassign
+        tag => delete tag.__typename
+      );
+      await setTitle(data.getNote.title);
+      setTags(data.getNote.tags);
+      setNoteContent(data.getNote.content);
+      setSnapshot({
+        title: data.getNote.title,
+        tags: data.getNote.tags,
+        content: data.getNote.content,
+      });
+      setLoading(false);
+      setNotesDiffer(false);
+    };
+    fetchData();
+    console.log(noteContent);
   }, []);
 
-  console.log(tags);
+  useEffect(() => {
+    if (title !== snapshot.title) {
+      setNotesDiffer(true);
+    } else {
+      setNotesDiffer(false);
+    }
+  }, [title]);
+
+  useEffect(() => {
+    if (!_.isEqual(tags, snapshot.tags)) {
+      setNotesDiffer(true);
+    } else {
+      setNotesDiffer(false);
+    }
+  }, [tags]);
+
+  useEffect(() => {
+    if (noteContent !== snapshot.content) {
+      setNotesDiffer(true);
+    } else {
+      setNotesDiffer(false);
+    }
+  }, [noteContent]);
 
   return (
     <div data-testid="edit-note">
@@ -114,15 +147,17 @@ const EditNote = ({
         />
         <CKEditor
           data={noteContent}
+          disabled={loading}
           onInit={editor => {
             editor.ui.view.editable.element.parentElement.insertBefore(
               editor.ui.view.toolbar.element,
               editor.ui.view.editable.element
             );
+            editor.setData('<p>&nbsp;</p>');
           }}
           onChange={(event, editor) => {
-            const editorContent = editor.getData();
-            setNoteContent(editorContent);
+            const content = editor.getData();
+            setNoteContent(content);
           }}
           editor={DecoupledEditor}
         />
@@ -135,11 +170,30 @@ const EditNote = ({
           ]}
         >
           {(updateNote, { saveLoading, saveError }) => {
-            if (saveLoading) return <p>Loading...</p>;
             return (
-              <button type="submit" onClick={e => saveNote(e, updateNote)}>
-                Save
-              </button>
+              <ActionButton
+                noPadding
+                success
+                disabled={loading || saveLoading || !notesDiffer}
+                width="13.4rem"
+                height="4.3rem"
+                margin={`${spaces.md}px 0 0 0`}
+                type="submit"
+                onClick={e => saveNote(e, updateNote)}
+              >
+                {loading || saveLoading ? (
+                  <span data-testid="spinner">
+                    <ClipLoader
+                      loading={loading}
+                      color={theme.colors.primary}
+                      sizeUnit="rem"
+                      size={2}
+                    />
+                  </span>
+                ) : (
+                  'Save note'
+                )}
+              </ActionButton>
             );
           }}
         </Mutation>

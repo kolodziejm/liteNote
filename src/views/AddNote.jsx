@@ -24,7 +24,7 @@ const AddNote = ({ history }) => {
   const [title, setTitle] = useState('');
   const [tagName, setTagName] = useState('');
   const [tags, setTags] = useState([]);
-  const [noteContent, setNoteContent] = useState('');
+  const [noteContent, setNoteContent] = useState('<p>&nbsp;</p>');
   const [errors, setErrors] = useState({});
 
   const uiCtx = useContext(uiContext);
