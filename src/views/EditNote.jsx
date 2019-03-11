@@ -18,6 +18,8 @@ import TagForm from '../components/TagForm';
 import NoteContainer from '../components/helpers/NoteContainer';
 import ActionButton from '../components/ui/ActionButton';
 import Helper from '../components/typography/Helper';
+import Backdrop from '../components/ui/Backdrop';
+import Modal from '../components/Modal';
 
 const { spaces } = theme;
 
@@ -39,6 +41,7 @@ const EditNote = ({
     noteContent: '',
   });
 
+  const [deleteModal, setDeleteModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [notesDiffer, setNotesDiffer] = useState(false);
 
@@ -163,6 +166,37 @@ const EditNote = ({
   return (
     <div data-testid="edit-note">
       <Navbar simple />
+      {deleteModal && (
+        <Backdrop>
+          <Modal
+            title="Delete note"
+            description="Are you sure you want to delete this note?"
+          >
+            <ActionButton
+              noPadding
+              warning
+              width="13.4rem"
+              height="4.3rem"
+              margin={`0 ${spaces.md}px 0 0`}
+              type="button"
+              onClick={() => setDeleteModal(false)}
+            >
+              Cancel
+            </ActionButton>
+            {/* DELETE MUTATION */}
+            <ActionButton
+              noPadding
+              danger
+              width="11rem"
+              height="4.3rem"
+              type="button"
+              onClick={() => setDeleteModal(false)}
+            >
+              Delete
+            </ActionButton>
+          </Modal>
+        </Backdrop>
+      )}
       <NoteContainer>
         <Field
           id="title"
@@ -223,7 +257,7 @@ const EditNote = ({
                 disabled={loading || saveLoading || !notesDiffer}
                 width="13.4rem"
                 height="4.3rem"
-                margin={`${spaces.md}px 0 0 0`}
+                margin={`${spaces.md}px ${spaces.md}px 0 0`}
                 type="submit"
                 onClick={e => saveNote(e, updateNote)}
               >
@@ -243,6 +277,18 @@ const EditNote = ({
             );
           }}
         </Mutation>
+        <ActionButton
+          noPadding
+          warning
+          disabled={loading}
+          width="13.4rem"
+          height="4.3rem"
+          margin={`${spaces.md}px 0 0 0`}
+          type="button"
+          onClick={() => setDeleteModal(true)}
+        >
+          Delete note
+        </ActionButton>
         <Prompt
           when={notesDiffer}
           message="You have unsaved changes, are you sure you want to leave?"

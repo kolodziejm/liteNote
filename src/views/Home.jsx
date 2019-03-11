@@ -92,6 +92,7 @@ const Search = ({
     </ButtonContainer>
     {searchMethod === 'title' ? (
       <Input
+        type="text"
         value={title}
         onChange={setTitle}
         placeholder="Start typing the title..."
@@ -148,7 +149,7 @@ const Home = ({ history, client }) => {
     if (loading) return;
     setTitle(e.target.value);
     const filteredArr = notes.filter(({ title: noteTitle }) =>
-      noteTitle.toLowerCase().includes(e.target.value)
+      noteTitle.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setFilteredNotes(filteredArr);
   };

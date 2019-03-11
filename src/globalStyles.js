@@ -55,7 +55,7 @@ body {
 
 .ck-content {
   padding: ${({ theme: { spaces } }) => `0 ${spaces.md}px`} !important;
-  box-shadow: 0 3px 6px ${({ theme: { colors } }) => colors.shadow} !important;
+  box-shadow: 0 2px 4px ${({ theme: { colors } }) => colors.shadow} !important;
   min-height: 40rem;
   font-size: 16px;
   color: ${({ theme: { colors } }) => colors.darkGrey};

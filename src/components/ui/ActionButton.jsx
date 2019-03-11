@@ -6,13 +6,18 @@ export default styled(OvalButton)`
     success && colors.success};
   background-color: ${({ danger, theme: { colors } }) =>
     danger && colors.danger};
+  background-color: ${({ warning, theme: { colors } }) =>
+    warning && colors.secondary};
   border: 1px solid
-    ${({ success, danger, theme: { colors } }) => {
+    ${({ success, danger, warning, theme: { colors } }) => {
       if (success) {
         return colors.success;
       }
       if (danger) {
         return colors.danger;
+      }
+      if (warning) {
+        return colors.secondary;
       }
       return colors.body;
     }};
