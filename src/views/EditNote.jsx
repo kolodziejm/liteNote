@@ -198,17 +198,19 @@ const EditNote = ({
             <Mutation
               mutation={DELETE_NOTE}
               variables={{ id: noteId }}
-              update={(cache, { data }) => {
-                const notes = cache.readQuery({ query: GET_ALL_NOTES });
-                const filteredNotes = notes.getAllNotes.filter(
-                  ({ _id }) => _id !== noteId
-                );
-                cache.writeQuery({
-                  query: GET_ALL_NOTES,
-                  data: {
-                    getAllNotes: filteredNotes,
-                  },
-                });
+              update={(cache, { data: { deleteNote: deleteResponse } }) => {
+                if (deleteResponse) {
+                  const notes = cache.readQuery({ query: GET_ALL_NOTES });
+                  const filteredNotes = notes.getAllNotes.filter(
+                    ({ _id }) => _id !== noteId
+                  );
+                  cache.writeQuery({
+                    query: GET_ALL_NOTES,
+                    data: {
+                      getAllNotes: filteredNotes,
+                    },
+                  });
+                }
               }}
             >
               {(deleteMutation, { deleteLoading, deleteError }) => {
