@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Prompt } from 'react-router-dom';
+import { Prompt, withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import { ClipLoader } from 'react-spinners';
 import CKEditor from '@ckeditor/ckeditor5-react';
@@ -8,7 +8,12 @@ import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import uniqid from 'uniqid';
 import _ from 'lodash';
 
-import { UPDATE_NOTE, GET_ALL_NOTES, GET_NOTE } from '../queries/notes';
+import {
+  UPDATE_NOTE,
+  GET_ALL_NOTES,
+  GET_NOTE,
+  DELETE_NOTE,
+} from '../queries/notes';
 import theme from '../theme';
 import uiContext from '../uiContext';
 
@@ -28,6 +33,7 @@ const EditNote = ({
     params: { id },
   },
   client,
+  history,
 }) => {
   const [title, setTitle] = useState('');
   const [tagName, setTagName] = useState('');
@@ -103,6 +109,12 @@ const EditNote = ({
         }
       )
       .catch(err => console.log(err));
+  };
+
+  const deleteNote = deleteMutation => {
+    deleteMutation()
+      .then(data => history.push('/home'))
+      .catch(err => console.dir(err));
   };
 
   useEffect(() => {
@@ -183,17 +195,38 @@ const EditNote = ({
             >
               Cancel
             </ActionButton>
-            {/* DELETE MUTATION */}
-            <ActionButton
-              noPadding
-              danger
-              width="11rem"
-              height="4.3rem"
-              type="button"
-              onClick={() => setDeleteModal(false)}
+            <Mutation
+              mutation={DELETE_NOTE}
+              variables={{ id: noteId }}
+              update={(cache, { data }) => {
+                const notes = cache.readQuery({ query: GET_ALL_NOTES });
+                const filteredNotes = notes.getAllNotes.filter(
+                  ({ _id }) => _id !== noteId
+                );
+                cache.writeQuery({
+                  query: GET_ALL_NOTES,
+                  data: {
+                    getAllNotes: filteredNotes,
+                  },
+                });
+              }}
             >
-              Delete
-            </ActionButton>
+              {(deleteMutation, { deleteLoading, deleteError }) => {
+                return (
+                  <ActionButton
+                    disabled={deleteLoading}
+                    noPadding
+                    danger
+                    width="11rem"
+                    height="4.3rem"
+                    type="button"
+                    onClick={() => deleteNote(deleteMutation)}
+                  >
+                    Delete
+                  </ActionButton>
+                );
+              }}
+            </Mutation>
           </Modal>
         </Backdrop>
       )}
@@ -301,11 +334,13 @@ const EditNote = ({
 EditNote.propTypes = {
   match: PropTypes.shape({}),
   client: PropTypes.shape({}),
+  history: PropTypes.shape({}),
 };
 
 EditNote.defaultProps = {
   match: {},
   client: {},
+  history: {},
 };
 
-export default EditNote;
+export default withRouter(EditNote);
