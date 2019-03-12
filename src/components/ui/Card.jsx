@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
-export default styled.li`
+export default styled.div`
   max-width: ${({ maxWidth }) => maxWidth};
   margin: ${({ margin }) => margin};
-  list-style: none;
   box-shadow: 0 3px 6px ${({ theme: { colors } }) => colors.shadow};
   border-radius: ${({ theme: { borderRadiuses } }) => borderRadiuses.lg};
   padding: ${({ theme: { spaces } }) => `${spaces.md}px ${spaces.sm}px`};

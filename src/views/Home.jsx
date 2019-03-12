@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -7,6 +7,7 @@ import uniqid from 'uniqid';
 import _ from 'lodash';
 
 import theme from '../theme';
+import uiContext from '../uiContext';
 import { GET_ALL_NOTES } from '../queries/notes';
 
 import Navbar from '../components/Navbar';
@@ -19,6 +20,7 @@ import Center from '../components/helpers/Center';
 import Note from '../components/Note';
 import TagForm from '../components/TagForm';
 import { StyledLink } from '../components/ui/Link';
+import Snackbar from '../components/ui/Snackbar';
 
 const { spaces, breakpoints } = theme;
 
@@ -121,6 +123,8 @@ const Home = ({ history, client }) => {
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const uiCtx = useContext(uiContext);
+
   const changeSearchMethod = method => {
     setSearchMethod(method);
     if (method === 'title') {
@@ -164,6 +168,7 @@ const Home = ({ history, client }) => {
 
   useEffect(() => {
     fetchNotes();
+    setTimeout(() => uiCtx.setNoteDeleted(false), 5000);
   }, []);
 
   useEffect(() => {
@@ -180,14 +185,16 @@ const Home = ({ history, client }) => {
 
   const mappedNotes = notesToMap =>
     notesToMap.map(({ _id, title: noteTitle, excerpt, tags: noteTags }) => (
-      <StyledLink key={_id} to={`/edit-note/${_id}`}>
-        <Note
-          title={noteTitle}
-          excerpt={excerpt}
-          tags={noteTags}
-          margin={`0 0 ${spaces.md}px 0`}
-        />
-      </StyledLink>
+      <li key={_id} style={{ listStyle: 'none' }}>
+        <StyledLink to={`/edit-note/${_id}`}>
+          <Note
+            title={noteTitle}
+            excerpt={excerpt}
+            tags={noteTags}
+            margin={`0 0 ${spaces.md}px 0`}
+          />
+        </StyledLink>
+      </li>
     ));
 
   return (
@@ -222,6 +229,9 @@ const Home = ({ history, client }) => {
                 : mappedNotes(notes)}
             </NotesList>
           )}
+          <Snackbar pose={uiCtx.noteDeleted ? 'on' : 'off'} info>
+            Note successfully deleted.
+          </Snackbar>
         </MainContainer>
       </ContentLimiter>
     </div>
