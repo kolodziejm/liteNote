@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ClipLoader } from 'react-spinners';
 import uniqid from 'uniqid';
 import _ from 'lodash';
+import { IoIosAdd } from 'react-icons/io';
 
 import theme from '../theme';
 import uiContext from '../uiContext';
@@ -21,6 +22,7 @@ import Note from '../components/Note';
 import TagForm from '../components/TagForm';
 import { StyledLink } from '../components/ui/Link';
 import Snackbar from '../components/ui/Snackbar';
+import CreateBtn from '../components/ui/CreateBtn';
 
 const { spaces, breakpoints } = theme;
 
@@ -232,6 +234,11 @@ const Home = ({ history, client }) => {
           <Snackbar pose={uiCtx.noteDeleted ? 'on' : 'off'} info>
             Note successfully deleted.
           </Snackbar>
+          <Link to="/add-note">
+            <CreateBtn primary>
+              <IoIosAdd size="5rem" />
+            </CreateBtn>
+          </Link>
         </MainContainer>
       </ContentLimiter>
     </div>

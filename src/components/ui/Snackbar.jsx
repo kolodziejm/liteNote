@@ -9,6 +9,7 @@ const snackbarProps = {
 export default styled(posed.div(snackbarProps))`
   width: 100%;
   position: fixed;
+  z-index: 999;
   left: 50%;
   transform: translateX(-50%) !important;
   font-size: ${({ theme: { fontSizes } }) => fontSizes.sm};
