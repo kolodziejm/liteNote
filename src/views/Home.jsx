@@ -23,6 +23,7 @@ import TagForm from '../components/TagForm';
 import { StyledLink } from '../components/ui/Link';
 import Snackbar from '../components/ui/Snackbar';
 import CreateBtn from '../components/ui/CreateBtn';
+import MdHeading from '../components/typography/MdHeading';
 
 const { spaces, breakpoints } = theme;
 
@@ -224,6 +225,10 @@ const Home = ({ history, client }) => {
                 size={6}
               />
             </Center>
+          ) : !loading && !notes.length ? (
+            <MdHeading>
+              Create new note by clicking the button down below
+            </MdHeading>
           ) : (
             <NotesList>
               {title || tags.length

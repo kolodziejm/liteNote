@@ -8,6 +8,7 @@ module.exports = {
     'react/require-default-props': 1,
     'no-underscore-dangle': ['error', { allow: ['_id', '__typename'] }], // for mongoDB and apollo
     'react-hooks/rules-of-hooks': 'error',
-    'no-unused-vars': 1
+    'no-unused-vars': 1,
+    'no-nested-ternary': 0
   },
 };

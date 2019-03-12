@@ -55,6 +55,7 @@ const EditNote = ({
 
   const [updateSnackbar, setUpdateSnackbar] = useState(false);
   const [noteExist, setNoteExist] = useState(true);
+  const [updateId, setUpdateId] = useState('');
 
   const uiCtx = useContext(uiContext);
 
@@ -111,7 +112,8 @@ const EditNote = ({
           setLoading(false);
           setNotesDiffer(false);
           setUpdateSnackbar(true);
-          setTimeout(() => setUpdateSnackbar(false), 5000);
+          const timeId = setTimeout(() => setUpdateSnackbar(false), 5000);
+          setUpdateId(timeId);
         }
       )
       .catch(err => console.log(err));
@@ -126,6 +128,12 @@ const EditNote = ({
       })
       .catch(err => console.dir(err));
   };
+
+  useEffect(() => () => {
+    if (updateId) {
+      clearTimeout(updateId);
+    }
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -154,9 +162,12 @@ const EditNote = ({
       setNotesDiffer(false);
     };
     fetchData();
-    setTimeout(() => {
+    const timeId = setTimeout(() => {
       uiCtx.setNoteCreated(false);
     }, 4000);
+    return () => {
+      if (timeId) clearTimeout(timeId);
+    };
   }, []);
 
   useEffect(() => {
@@ -186,11 +197,15 @@ const EditNote = ({
   }, [noteContent]);
 
   useEffect(() => {
+    let errId;
     if (errors.tagName) {
-      setTimeout(() => {
+      errId = setTimeout(() => {
         setErrors({ tagName: '' });
       }, 5000);
     }
+    return () => {
+      if (errId) clearTimeout(errId);
+    };
   }, [errors]);
 
   return (
