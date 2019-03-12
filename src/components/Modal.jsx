@@ -8,7 +8,7 @@ import MdHeading from './typography/MdHeading';
 import Paragraph from './typography/Paragraph';
 
 const ModalBody = styled.div`
-  background-color: ${({ theme: { colors } }) => colors.light};
+  background-color: ${({ theme: { colors } }) => colors.background};
   border-radius: ${({ theme: { borderRadiuses } }) => borderRadiuses.lg};
   padding: ${({ theme: { spaces } }) => `${spaces.md}px ${spaces.sm}px`};
   max-width: ${({ theme: { spacingUnit } }) => `${spacingUnit * 50}px`};

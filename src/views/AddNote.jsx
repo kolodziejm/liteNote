@@ -58,8 +58,8 @@ const AddNote = ({ history }) => {
     setErrors({});
     createNote()
       .then(({ data: { createOrUpdateNote: { note, errors: resErrors } } }) => {
-        uiCtx.noteSaved = true;
         history.push(`/edit-note/${note._id}`);
+        uiCtx.setNoteCreated(true);
       })
       .catch(err => console.log(err));
   };

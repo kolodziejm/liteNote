@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Prompt, withRouter } from 'react-router-dom';
@@ -25,6 +26,7 @@ import ActionButton from '../components/ui/ActionButton';
 import Helper from '../components/typography/Helper';
 import Backdrop from '../components/ui/Backdrop';
 import Modal from '../components/Modal';
+import Snackbar from '../components/ui/Snackbar';
 
 const { spaces } = theme;
 
@@ -50,6 +52,9 @@ const EditNote = ({
   const [deleteModal, setDeleteModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [notesDiffer, setNotesDiffer] = useState(false);
+
+  const [updateSnackbar, setUpdateSnackbar] = useState(false);
+  const [noteExist, setNoteExist] = useState(true);
 
   const uiCtx = useContext(uiContext);
 
@@ -105,7 +110,8 @@ const EditNote = ({
           });
           setLoading(false);
           setNotesDiffer(false);
-          uiCtx.noteSaved = true;
+          setUpdateSnackbar(true);
+          setTimeout(() => setUpdateSnackbar(false), 5000);
         }
       )
       .catch(err => console.log(err));
@@ -113,7 +119,11 @@ const EditNote = ({
 
   const deleteNote = deleteMutation => {
     deleteMutation()
-      .then(data => history.push('/home'))
+      .then(data => {
+        setNoteExist(false);
+        history.push('/home');
+        uiCtx.setNoteDeleted(true);
+      })
       .catch(err => console.dir(err));
   };
 
@@ -123,6 +133,11 @@ const EditNote = ({
         query: GET_NOTE,
         variables: { id: noteId },
       });
+      if (!data.getNote._id) {
+        setNoteExist(false);
+        history.push('/home');
+      }
+      await client.query({ query: GET_ALL_NOTES });
       data.getNote.tags.forEach(
         // eslint-disable-next-line no-param-reassign
         tag => delete tag.__typename
@@ -139,6 +154,9 @@ const EditNote = ({
       setNotesDiffer(false);
     };
     fetchData();
+    setTimeout(() => {
+      uiCtx.setNoteCreated(false);
+    }, 4000);
   }, []);
 
   useEffect(() => {
@@ -199,18 +217,29 @@ const EditNote = ({
               mutation={DELETE_NOTE}
               variables={{ id: noteId }}
               update={(cache, { data: { deleteNote: deleteResponse } }) => {
-                if (deleteResponse) {
-                  const notes = cache.readQuery({ query: GET_ALL_NOTES });
-                  const filteredNotes = notes.getAllNotes.filter(
-                    ({ _id }) => _id !== noteId
-                  );
-                  cache.writeQuery({
-                    query: GET_ALL_NOTES,
-                    data: {
-                      getAllNotes: filteredNotes,
+                cache.writeQuery({
+                  query: GET_NOTE,
+                  variables: { id: noteId },
+                  data: {
+                    getNote: {
+                      _id: '',
+                      title: '',
+                      tags: [],
+                      content: '',
+                      __typename: 'Note',
                     },
-                  });
-                }
+                  },
+                });
+                const notes = cache.readQuery({ query: GET_ALL_NOTES });
+                const filteredNotes = notes.getAllNotes.filter(
+                  ({ _id }) => _id !== noteId
+                );
+                cache.writeQuery({
+                  query: GET_ALL_NOTES,
+                  data: {
+                    getAllNotes: filteredNotes,
+                  },
+                });
               }}
             >
               {(deleteMutation, { deleteLoading, deleteError }) => {
@@ -324,10 +353,18 @@ const EditNote = ({
         >
           Delete note
         </ActionButton>
-        <Prompt
-          when={notesDiffer}
-          message="You have unsaved changes, are you sure you want to leave?"
-        />
+        {noteExist && (
+          <Prompt
+            when={notesDiffer}
+            message="You have unsaved changes, are you sure you want to leave?"
+          />
+        )}
+        <Snackbar pose={updateSnackbar ? 'on' : 'off'} success>
+          Note successfully saved.
+        </Snackbar>
+        <Snackbar pose={uiCtx.noteCreated ? 'on' : 'off'} success>
+          Note successfully created.
+        </Snackbar>
       </NoteContainer>
     </div>
   );
