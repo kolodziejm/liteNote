@@ -122,6 +122,8 @@ const EditNote = ({
   const deleteNote = deleteMutation => {
     deleteMutation()
       .then(data => {
+        console.log(data);
+        console.log('after delete');
         setNoteExist(false);
         history.push('/home');
         uiCtx.setNoteDeleted(true);
@@ -141,11 +143,12 @@ const EditNote = ({
         query: GET_NOTE,
         variables: { id: noteId },
       });
+      await client.query({ query: GET_ALL_NOTES });
+      console.log('querying...');
       if (!data.getNote._id) {
         setNoteExist(false);
         history.push('/home');
       }
-      await client.query({ query: GET_ALL_NOTES });
       data.getNote.tags.forEach(
         // eslint-disable-next-line no-param-reassign
         tag => delete tag.__typename
@@ -232,6 +235,7 @@ const EditNote = ({
               mutation={DELETE_NOTE}
               variables={{ id: noteId }}
               update={(cache, { data: { deleteNote: deleteResponse } }) => {
+                console.log(cache);
                 cache.writeQuery({
                   query: GET_NOTE,
                   variables: { id: noteId },
@@ -245,16 +249,20 @@ const EditNote = ({
                     },
                   },
                 });
-                const notes = cache.readQuery({ query: GET_ALL_NOTES });
-                const filteredNotes = notes.getAllNotes.filter(
-                  ({ _id }) => _id !== noteId
-                );
-                cache.writeQuery({
-                  query: GET_ALL_NOTES,
-                  data: {
-                    getAllNotes: filteredNotes,
-                  },
-                });
+                // cache.data.data.ROOT_QUERY.getAllNotes.filter(
+                //   ({ id: nId }) => nId !== noteId
+                // );
+                // const notes = cache.readQuery({ query: GET_ALL_NOTES });
+                // console.log(notes);
+                // const filteredNotes = notes.getAllNotes.filter(
+                //   ({ _id }) => _id !== noteId
+                // );
+                // cache.writeQuery({
+                //   query: GET_ALL_NOTES,
+                //   data: {
+                //     getAllNotes: filteredNotes,
+                //   },
+                // });
               }}
             >
               {(deleteMutation, { deleteLoading, deleteError }) => {

@@ -11,4 +11,8 @@ module.exports = {
     'no-unused-vars': 1,
     'no-nested-ternary': 0
   },
+  globals: {
+    "localStorage": true,
+    "fetch": true
+  }
 };

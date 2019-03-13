@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { ApolloConsumer } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { ClipLoader } from 'react-spinners';
 
 import theme from '../theme';
+import authContext from '../authContext';
 import { LOGIN_USER } from '../queries/auth';
 
 import LgHeading from '../components/typography/LgHeading';
@@ -17,12 +18,15 @@ import Logo from '../components/ui/Logo';
 import Center from '../components/helpers/Center';
 import CtaButton from '../components/ui/CtaButton';
 import { LinkPrimary } from '../components/ui/Link';
+import Snackbar from '../components/ui/Snackbar';
 
 const Login = ({ history }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const authCtx = useContext(authContext);
 
   const loginHandler = async (e, client) => {
     e.preventDefault();
@@ -50,6 +54,7 @@ const Login = ({ history }) => {
     }
     // eslint-disable-next-line no-undef
     localStorage.setItem('token', `Bearer ${login.token}`);
+    authCtx.setAuthenticated(true);
     return history.push('/home');
   };
 
@@ -112,6 +117,9 @@ const Login = ({ history }) => {
               </Paragraph>
             </Center>
           </FormBody>
+          <Snackbar pose={authCtx.tokenExpired ? 'on' : 'off'} info>
+            Token has expired, login to your account.
+          </Snackbar>
         </Background>
       )}
     </ApolloConsumer>
