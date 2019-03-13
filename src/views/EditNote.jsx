@@ -249,20 +249,17 @@ const EditNote = ({
                     },
                   },
                 });
-                // cache.data.data.ROOT_QUERY.getAllNotes.filter(
-                //   ({ id: nId }) => nId !== noteId
-                // );
-                // const notes = cache.readQuery({ query: GET_ALL_NOTES });
-                // console.log(notes);
-                // const filteredNotes = notes.getAllNotes.filter(
-                //   ({ _id }) => _id !== noteId
-                // );
-                // cache.writeQuery({
-                //   query: GET_ALL_NOTES,
-                //   data: {
-                //     getAllNotes: filteredNotes,
-                //   },
-                // });
+
+                const notes = cache.readQuery({ query: GET_ALL_NOTES });
+                const filteredNotes = notes.getAllNotes.filter(
+                  ({ _id }) => _id !== noteId
+                );
+                cache.writeQuery({
+                  query: GET_ALL_NOTES,
+                  data: {
+                    getAllNotes: filteredNotes,
+                  },
+                });
               }}
             >
               {(deleteMutation, { deleteLoading, deleteError }) => {

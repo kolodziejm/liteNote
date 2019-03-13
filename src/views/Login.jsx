@@ -41,6 +41,7 @@ const Login = ({ history }) => {
         password,
       },
     });
+    console.log(login);
     setLoading(false);
     // eslint-disable-next-line no-console
     if (error) console.error(error);
@@ -57,6 +58,10 @@ const Login = ({ history }) => {
     authCtx.setAuthenticated(true);
     return history.push('/home');
   };
+
+  if (localStorage.getItem('expiredSnackbar')) {
+    setTimeout(() => localStorage.removeItem('expiredSnackbar'), 5000);
+  }
 
   return (
     <ApolloConsumer>
@@ -117,7 +122,10 @@ const Login = ({ history }) => {
               </Paragraph>
             </Center>
           </FormBody>
-          <Snackbar pose={authCtx.tokenExpired ? 'on' : 'off'} info>
+          <Snackbar
+            pose={localStorage.getItem('expiredSnackbar') ? 'on' : 'off'}
+            info
+          >
             Token has expired, login to your account.
           </Snackbar>
         </Background>

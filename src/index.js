@@ -13,38 +13,40 @@ import theme from './theme';
 import GlobalStyles from './globalStyles';
 import AuthContext from './authContext';
 
-const Index = withRouter(({ theme, history }) => {
+// jwtDecode token for every request and check if it is still valid.
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql',
+  request: operation => {
+    const token = localStorage.getItem('token');
+    operation.setContext({
+      headers: {
+        authorization: token,
+      },
+    });
+  },
+  fetchOptions: {
+    credentials: 'include',
+  },
+  onError: ({ graphQLErrors, networkError }) => {
+    const isAuthError = graphQLErrors.some(
+      err => err.extensions.code === 'UNAUTHENTICATED'
+    );
+    if (isAuthError) {
+      localStorage.removeItem('token');
+    }
+  },
+});
+
+const Index = withRouter(({ theme, history, client }) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [tokenExpired, setTokenExpired] = useState(false);
 
   if (!authenticated && localStorage.getItem('token')) {
     setAuthenticated(true);
+    const path = history.location.pathname;
+    if (path === '/' || path === '/login' || path === '/register')
+      history.push('/home');
   }
-
-  // jwtDecode token for every request and check if it is still valid.
-  const client = new ApolloClient({
-    uri: 'http://localhost:4000/graphql',
-    request: operation => {
-      const token = localStorage.getItem('token');
-      operation.setContext({
-        headers: {
-          authorization: token,
-        },
-      });
-    },
-    fetchOptions: {
-      credentials: 'include',
-    },
-    onError: ({ graphQLErrors, networkError }) => {
-      const isAuthError = graphQLErrors.some(
-        err => err.extensions.code === 'UNAUTHENTICATED'
-      );
-      if (isAuthError) {
-        localStorage.removeItem('token');
-        setAuthenticated(false);
-      }
-    },
-  });
 
   return (
     <HashRouter>
@@ -71,7 +73,7 @@ const Index = withRouter(({ theme, history }) => {
 
 const IndexWithRouter = () => (
   <HashRouter>
-    <Index theme={theme} />
+    <Index theme={theme} client={client} />
   </HashRouter>
 );
 

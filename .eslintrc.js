@@ -13,6 +13,7 @@ module.exports = {
   },
   globals: {
     "localStorage": true,
-    "fetch": true
+    "fetch": true,
+    "window": true
   }
 };
