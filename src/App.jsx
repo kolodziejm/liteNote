@@ -27,12 +27,9 @@ const App = ({ history }) => {
   // check exp of the token
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log(token);
     if (token) {
-      console.log('inside if token');
       const decoded = jwtDecode(token);
       if (Date.now() / 1000 > decoded.exp) {
-        console.log('TRIGGERED PUSH TO LOGIN');
         localStorage.removeItem('token');
         authCtx.setAuthenticated(false);
         history.push('/login');
