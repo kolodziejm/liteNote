@@ -4,6 +4,7 @@ import OvalButton from './OvalButton';
 export default styled(OvalButton)`
   border: 0;
   background-size: auto 130%;
+  background-color: ${({ theme: { colors } }) => colors.primary};
   background-image: linear-gradient(
     to bottom,
     ${({ theme: { colors } }) => colors.primary},

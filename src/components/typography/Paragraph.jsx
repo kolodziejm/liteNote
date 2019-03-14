@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export default styled.p`
-  font-size: ${({ theme: { fontSizes } }) => fontSizes.sm};
+  font-size: ${({ large, theme: { fontSizes } }) =>
+    large ? fontSizes.md : fontSizes.sm};
   margin: ${props => props.margin};
   max-width: ${props => props.maxWidth};
   color: ${({ theme: { colors }, color }) => {

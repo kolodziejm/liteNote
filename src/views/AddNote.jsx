@@ -18,7 +18,7 @@ import NoteContainer from '../components/helpers/NoteContainer';
 import Helper from '../components/typography/Helper';
 import ActionButton from '../components/ui/ActionButton';
 
-const { spaces, spacingUnit } = theme;
+const { spaces } = theme;
 
 const AddNote = ({ history }) => {
   const [title, setTitle] = useState('');
@@ -57,7 +57,7 @@ const AddNote = ({ history }) => {
     if (!title) return setErrors({ title: 'Set a title for the note' });
     setErrors({});
     createNote()
-      .then(({ data: { createOrUpdateNote: { note, errors: resErrors } } }) => {
+      .then(({ data: { createOrUpdateNote: { note } } }) => {
         history.push(`/edit-note/${note._id}`);
         uiCtx.setNoteCreated(true);
       })
@@ -120,7 +120,7 @@ const AddNote = ({ history }) => {
           variables={{ title, tags, content: noteContent, id: '' }}
           refetchQueries={() => [{ query: GET_ALL_NOTES }]}
         >
-          {(createNote, { loading, error }) => {
+          {(createNote, { loading }) => {
             return (
               <ActionButton
                 noPadding

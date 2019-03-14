@@ -6,11 +6,9 @@ import { ClipLoader } from 'react-spinners';
 import uniqid from 'uniqid';
 import _ from 'lodash';
 import { IoIosAdd } from 'react-icons/io';
-import jwtDecode from 'jwt-decode';
 
 import theme from '../theme';
 import uiContext from '../uiContext';
-import authContext from '../authContext';
 import { GET_ALL_NOTES } from '../queries/notes';
 
 import Navbar from '../components/Navbar';
@@ -119,7 +117,7 @@ const Search = ({
   </SearchContainer>
 );
 
-const Home = ({ history, client }) => {
+const Home = ({ client }) => {
   const [searchMethod, setSearchMethod] = useState('title');
   const [title, setTitle] = useState('');
   const [tagName, setTagName] = useState('');

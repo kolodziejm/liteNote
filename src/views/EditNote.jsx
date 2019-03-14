@@ -93,7 +93,6 @@ const EditNote = ({
           data: {
             createOrUpdateNote: {
               note: { title: resTitle, tags: resTags, content: resContent },
-              errors: resErrors,
             },
           },
         }) => {
@@ -121,9 +120,7 @@ const EditNote = ({
 
   const deleteNote = deleteMutation => {
     deleteMutation()
-      .then(data => {
-        console.log(data);
-        console.log('after delete');
+      .then(() => {
         setNoteExist(false);
         history.push('/home');
         uiCtx.setNoteDeleted(true);
@@ -144,7 +141,6 @@ const EditNote = ({
         variables: { id: noteId },
       });
       await client.query({ query: GET_ALL_NOTES });
-      console.log('querying...');
       if (!data.getNote._id) {
         setNoteExist(false);
         history.push('/home');
@@ -234,8 +230,7 @@ const EditNote = ({
             <Mutation
               mutation={DELETE_NOTE}
               variables={{ id: noteId }}
-              update={(cache, { data: { deleteNote: deleteResponse } }) => {
-                console.log(cache);
+              update={cache => {
                 cache.writeQuery({
                   query: GET_NOTE,
                   variables: { id: noteId },
@@ -262,7 +257,7 @@ const EditNote = ({
                 });
               }}
             >
-              {(deleteMutation, { deleteLoading, deleteError }) => {
+              {(deleteMutation, { deleteLoading }) => {
                 return (
                   <ActionButton
                     disabled={deleteLoading}
@@ -333,7 +328,7 @@ const EditNote = ({
             { query: GET_NOTE, variables: { id: noteId } },
           ]}
         >
-          {(updateNote, { saveLoading, saveError }) => {
+          {(updateNote, { saveLoading }) => {
             return (
               <ActionButton
                 noPadding

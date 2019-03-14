@@ -41,7 +41,6 @@ const Login = ({ history }) => {
         password,
       },
     });
-    console.log(login);
     setLoading(false);
     // eslint-disable-next-line no-console
     if (error) console.error(error);

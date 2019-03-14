@@ -31,8 +31,6 @@ const NavLimiter = styled.div`
 const Navbar = ({ simple, landing, client, history }) => {
   const authCtx = useContext(authContext);
 
-  console.log(history);
-
   const logoutUser = () => {
     authCtx.setAuthenticated(false);
     localStorage.removeItem('token');
@@ -48,7 +46,7 @@ const Navbar = ({ simple, landing, client, history }) => {
       <NavLimiter>
         {simple ? (
           <Center>
-            <Logo simple authenticated />
+            <Logo simple authenticated={!!authCtx.authenticated} />
           </Center>
         ) : landing ? (
           <FlexBetween>
