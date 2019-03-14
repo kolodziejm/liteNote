@@ -1,8 +1,8 @@
 // for form titles
 import styled from 'styled-components';
 
-export default styled.h3`
-  font-size: ${({ theme: { fontSizes } }) => fontSizes.xl};
+export default styled.h2`
+  font-size: ${({ theme: { fontSizes } }) => fontSizes.xxl};
   text-align: ${props => props.textAlign};
   margin: ${props => props.margin};
   font-weight: 400;

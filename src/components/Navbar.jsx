@@ -5,16 +5,21 @@ import { Link, withRouter } from 'react-router-dom';
 import { ApolloConsumer } from 'react-apollo';
 import authContext from '../authContext';
 
+import theme from '../theme';
+
 import NavBody from './ui/NavBody';
 import Logo from './ui/Logo';
-// import ContentLimiter from './helpers/ContentLimiter';
 import Center from './helpers/Center';
 import FlexBetween from './helpers/FlexBetween';
+import CtaButton from './ui/CtaButton';
+
+const { spaces } = theme;
 
 const NavLink = styled(Link)`
   color: ${({ theme: { colors } }) => colors.secondary};
   text-decoration: none;
   font-size: ${({ theme: { fontSizes } }) => fontSizes.sm};
+  margin: ${({ margin }) => margin};
   /* font-weight: 700; */
 `;
 
@@ -23,13 +28,19 @@ const NavLimiter = styled.div`
   max-width: 1160px;
 `;
 
-const Navbar = ({ simple, landing, client }) => {
+const Navbar = ({ simple, landing, client, history }) => {
   const authCtx = useContext(authContext);
+
+  console.log(history);
 
   const logoutUser = () => {
     authCtx.setAuthenticated(false);
     localStorage.removeItem('token');
     client.clearStore();
+  };
+
+  const redirectToRegister = () => {
+    history.push('/register');
   };
 
   return (
@@ -42,9 +53,18 @@ const Navbar = ({ simple, landing, client }) => {
         ) : landing ? (
           <FlexBetween>
             <Logo simple />
-            <>
-              <button type="button">Logout</button>
-            </>
+            <div>
+              <NavLink to="/login" margin={`0 ${spaces.md}px 0 0`}>
+                Login
+              </NavLink>
+              <CtaButton
+                onClick={redirectToRegister}
+                width="11.5rem"
+                height="3.7rem"
+              >
+                Register
+              </CtaButton>
+            </div>
           </FlexBetween>
         ) : (
           <FlexBetween>
@@ -63,6 +83,7 @@ Navbar.propTypes = {
   simple: PropTypes.bool,
   landing: PropTypes.bool,
   client: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 Navbar.defaultProps = {
@@ -70,8 +91,8 @@ Navbar.defaultProps = {
   landing: false,
 };
 
-export default props => (
+export default withRouter(props => (
   <ApolloConsumer>
     {client => <Navbar {...props} client={client} />}
   </ApolloConsumer>
-);
+));

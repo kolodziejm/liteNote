@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import OvalButton from './OvalButton';
 
 export default styled(OvalButton)`
+  border: 0;
   background-size: auto 130%;
   background-image: linear-gradient(
     to bottom,
@@ -12,6 +13,7 @@ export default styled(OvalButton)`
   -o-transition: all 0.4s ease-in-out;
   -webkit-transition: all 0.4s ease-in-out;
   transition: all 0.4s ease-in-out;
+  text-decoration: none;
 
   &:hover,
   &:active,
