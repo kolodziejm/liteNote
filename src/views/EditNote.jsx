@@ -85,6 +85,10 @@ const EditNote = ({
   const saveNote = (e, updateNote) => {
     e.preventDefault();
     if (!title) return setErrors({ title: 'Set a title for the note' });
+    if (title.length > 120)
+      return setErrors({
+        title: `Title's length has to be at most 120 characters`,
+      });
     setErrors({});
     setLoading(true);
     updateNote()
