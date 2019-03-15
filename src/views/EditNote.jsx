@@ -324,7 +324,6 @@ const EditNote = ({
           mutation={UPDATE_NOTE}
           variables={{ title, tags, content: noteContent, id: noteId }}
           refetchQueries={() => [
-            { query: GET_ALL_NOTES },
             { query: GET_NOTE, variables: { id: noteId } },
           ]}
         >

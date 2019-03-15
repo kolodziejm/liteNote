@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export default styled.button`
+  max-width: 90px;
   border: 8px solid
     ${({ success, primary, theme: { colors } }) => {
       if (primary) {
