@@ -326,6 +326,22 @@ const EditNote = ({
           refetchQueries={() => [
             { query: GET_NOTE, variables: { id: noteId } },
           ]}
+          update={(cache, { data }) => {
+            const notes = cache.readQuery({ query: GET_ALL_NOTES });
+            const thisNoteIndex = notes.getAllNotes.findIndex(
+              ({ _id }) => _id === noteId
+            );
+            const notesCopy = [...notes.getAllNotes];
+            notesCopy[thisNoteIndex] = {
+              ...data.createOrUpdateNote.note,
+            };
+            cache.writeQuery({
+              query: GET_ALL_NOTES,
+              data: {
+                getAllNotes: notesCopy,
+              },
+            });
+          }}
         >
           {(updateNote, { saveLoading }) => {
             return (

@@ -46,8 +46,10 @@ export const UPDATE_NOTE = gql`
   mutation($title: String!, $tags: [TagInput], $content: String, $id: ID) {
     createOrUpdateNote(title: $title, tags: $tags, content: $content, id: $id) {
       note {
+        _id
         title
         content
+        excerpt
         tags {
           id
           tagName
