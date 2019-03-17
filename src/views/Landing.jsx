@@ -21,6 +21,7 @@ import tagsImg from '../assets/images/tags-illustration.svg';
 
 const Header = styled.header`
   height: 60vh;
+  min-height: 560px;
   background-image: linear-gradient(
       rgba(84, 28, 181, 0.9),
       rgba(84, 28, 181, 0.9)
@@ -33,8 +34,12 @@ const Header = styled.header`
     `${spacingUnit * 12}px ${spaces.sm}px ${spaces.md}px ${spaces.sm}px`};
 `;
 
+const AboutSection = styled.section`
+  padding: ${({ theme: { spaces } }) => `${spaces.xxl}px ${spaces.sm}px`};
+`;
+
 const FeaturesSection = styled.section`
-  padding: ${({ theme: { spaces } }) => `${spaces.xl}px ${spaces.sm}px`};
+  padding: ${({ theme: { spaces } }) => `${spaces.xxl}px ${spaces.sm}px`};
 `;
 
 const CtaSection = styled.section`
@@ -55,6 +60,11 @@ const CardsList = styled.div`
       `${spacingUnit * 132}px`}) {
     display: flex;
   }
+`;
+
+const ContentLimiter = styled.div`
+  margin: 0 auto;
+  max-width: 960px;
 `;
 
 const { spaces } = theme;
@@ -87,14 +97,14 @@ const Landing = ({ history }) => {
         </XlHeading>
         <Center margin={`${spaces.md}px 0 0 0`}>
           <Paragraph large color="lightGrey">
-            Looking for a place to start your journal or life-changing project?
+            Looking for a place to start your journal or store your knowledge?
           </Paragraph>
           <Paragraph large color="lightGrey">
             LiteNote has you covered.
           </Paragraph>
           <CtaButton
             onClick={redirectToRegister}
-            width="20.5rem"
+            width="19.5rem"
             height="4.7rem"
             margin={`${spaces.lg}px 0 0 0`}
           >
@@ -102,6 +112,20 @@ const Landing = ({ history }) => {
           </CtaButton>
         </Center>
       </Header>
+      <AboutSection>
+        <XlHeading margin={`0 0 ${spaces.lg}px 0`} textAlign="center">
+          Create your workflow
+        </XlHeading>
+        <ContentLimiter>
+          <Paragraph>
+            LiteNote allows you to create notes using powerful rich text editor.
+            You can organize your notes using the tags you set up for quick and
+            easy access. Whether it&apos;s a journal, builds for your favorite
+            video game or notes for your foreign language lessons - you can
+            store and organize them here!
+          </Paragraph>
+        </ContentLimiter>
+      </AboutSection>
       <FeaturesSection>
         <XlHeading margin={`0 0 ${spaces.lg}px 0`} textAlign="center">
           Features
@@ -123,7 +147,7 @@ const Landing = ({ history }) => {
           <Paragraph large>It&apos;s completely free!</Paragraph>
           <CtaButton
             onClick={redirectToRegister}
-            width="20.5rem"
+            width="19.5rem"
             height="4.7rem"
             margin={`${spaces.lg}px 0 0 0`}
           >

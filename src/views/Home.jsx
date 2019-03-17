@@ -239,7 +239,7 @@ const Home = ({ client }) => {
           <Snackbar pose={uiCtx.noteDeleted ? 'on' : 'off'} info>
             Note successfully deleted.
           </Snackbar>
-          <Link to="/add-note">
+          <Link to={loading ? '/home' : '/add-note'}>
             <CreateBtn primary>
               <IoIosAdd size="5rem" />
             </CreateBtn>
