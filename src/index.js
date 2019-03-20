@@ -15,7 +15,7 @@ import AuthContext from './authContext';
 
 // jwtDecode token for every request and check if it is still valid.
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
+  uri: 'https://lite-note.herokuapp.com/graphql',
   request: operation => {
     const token = localStorage.getItem('token');
     operation.setContext({

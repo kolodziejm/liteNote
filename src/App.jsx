@@ -16,8 +16,6 @@ import NotFound from './views/NotFound';
 
 import UIContext from './uiContext';
 
-// get token from localstorage + decode to get Date and user data, set auth routes based on it
-
 const App = ({ history }) => {
   const [noteCreated, setNoteCreated] = useState(false);
   const [noteDeleted, setNoteDeleted] = useState(false);
