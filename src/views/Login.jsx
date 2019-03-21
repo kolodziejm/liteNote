@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { ApolloConsumer } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import { ClipLoader } from 'react-spinners';
 
@@ -30,6 +31,15 @@ const Login = ({ history }) => {
 
   const loginHandler = async (e, client) => {
     e.preventDefault();
+    const validationErrors = {};
+    if (username.length < 3) {
+      validationErrors.username = 'Incorrect username';
+    }
+    if (password.length < 5) {
+      validationErrors.password = 'Incorrect password';
+    }
+    if (!_.isEmpty(validationErrors)) return setErrors(validationErrors);
+
     setLoading(true);
     const {
       data: { login },

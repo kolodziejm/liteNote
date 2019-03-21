@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import { ClipLoader } from 'react-spinners';
 
@@ -26,6 +27,18 @@ const Register = ({ history }) => {
 
   const submitHandler = (e, registerUser) => {
     e.preventDefault();
+    const validationErrors = {};
+    if (username.length < 3) {
+      validationErrors.username = 'Enter a username with at least 3 characters';
+    }
+    if (password.length < 5) {
+      validationErrors.password = 'Enter a password with at least 5 characters';
+    }
+    if (password !== passwordConfirm) {
+      validationErrors.passwordConfirm = "Passwords don't match";
+    }
+
+    if (!_.isEmpty(validationErrors)) return setErrors(validationErrors);
     registerUser()
       .then(({ data }) => {
         const { errors: errs, token } = data.register;
