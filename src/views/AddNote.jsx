@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter, Prompt } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
@@ -152,10 +152,6 @@ const AddNote = ({ history }) => {
             );
           }}
         </Mutation>
-        <Prompt
-          when={title !== '' || tags.length || noteContent !== '<p>&nbsp;</p>'}
-          message="You haven't created a note, are you sure you want to leave?"
-        />
       </NoteContainer>
     </div>
   );
